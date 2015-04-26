@@ -1,11 +1,10 @@
-var mongoose = require('mongoose');
-mongoose.connect("mongodb://localhost/friends");
+var mongoose = require('../mongodb/dbConnection');
+var UserSchema = require('../mongodb/userSchema');
+// var UserSchema = new mongoose.Schema({
+// 	name:String,
+// 	password:String
+// },{
+// 	collection:'credentials'
+// });
 
-var UserSchema = new mongoose.Schema({
-	name:String,
-	password:String
-},{
-	collection:'credentials'
-});
-
-module.exports = mongoose.model('credentials',UserSchema);
+module.exports = mongoose.model('users',UserSchema);

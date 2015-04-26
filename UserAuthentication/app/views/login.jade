@@ -1,9 +1,129 @@
 html
-	head
-	body
-		h1 Login Page
-		form(action="/login" method="post")
-			input(type="text" name="username")
-			input(type="text" name="password")
-			br
-			input(type="submit" name="btnSubmit")
+  head
+    link(rel='stylesheet', type='text/css', href='../css/bootstrap.css')
+    link(rel='stylesheet', type='text/css', href='../css/bootstrap-theme.css')
+    link(rel='stylesheet', type='text/css', href='../css/site.css')
+    include shared/scripts.jade
+    script(type="text/javascript", src="./scripts/Views/loginView.js")
+    script(type="text/javascript", src="./scripts/Views/signupView.js")
+  body
+    link(href='//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css', rel='stylesheet')
+    .omb_login  
+      h3.omb_authTitle
+        | Login or 
+        a(href='#') Sign up    
+    .col-md-6  
+      .omb_login             
+        .container#loginContainer          
+          
+    .col-md-6
+      .sign-up
+        .container#signupContainer
+            
+    script#tmplSignupView(type="text/template")
+      .row
+        .col-md-6
+          .form-group
+            input.form-control.input-lg(type='text', name='FirstName', placeholder='First Name')
+        |                 
+        .col-md-6
+          .form-group
+            input.form-control.input-lg(type='text', name='LastName', placeholder='Last Name')
+      |             
+      .row
+        .col-md-12
+          .form-group
+            input.form-control.input-lg(type='text', name='Email', placeholder='Email')
+      |             
+      .row
+        .col-md-12
+          .form-group
+            input.form-control.input-lg(type='password', name='Password', placeholder='Password')
+      |             
+      .row
+        .col-md-12
+          .form-group
+            input.form-control.input-lg(type='password', placeholder='Confirm Password')
+      |             
+      .row
+        .col-md-12
+          .form-group
+            label.input-lg Date Of Birth
+            | 
+      .row
+        .col-md-4
+          .form-group                  
+            select.form-control.input-lg.col-md-4(name="date") 
+              <option>Date</option>
+              {{#for 1 31 1}}<option value="this">{{this}}</option>{{/for}}
+        .col-md-4
+          .form-group
+            select.form-control.input-lg.col-md-4(name="date") 
+              <option>Month</option>
+              {{#months}}<option value="@index">{{this}}</option>{{/months}}
+        .col-md-4
+          .form-group
+            select.form-control.input-lg.col-md-4(name="date") 
+              <option>Year</option>
+              {{#forWhile year 110 -1}}<option value="@index">{{this}}</option>{{/forWhile}}
+          div
+              
+      |             
+      .row
+        .col-md-12
+          .form-group
+            input(type='radio', name='Gender', value='M', checked='checked')
+            |                         
+            label.input-lg(for='Gender') Male
+            |                         
+            input(type='radio', name='Gender', value='F')
+            |                         
+            label.input-lg(for='Gender') Female
+      |             
+      .row
+        .col-md-12
+          input.btn.btn-success.btn-lg(type='submit', value='Sign Up')
+
+    script#tmplLoginView(type="text/template")
+      .row.omb_row-sm-offset-3.omb_socialButtons
+        .col-xs-4.col-sm-4
+          a.btn.btn-lg.btn-block.omb_btn-facebook(href='/auth/facebook')
+            i.fa.fa-facebook.visible-xs      
+            span.hidden-xs Facebook
+        .col-xs-4.col-sm-4
+          a.btn.btn-lg.btn-block.omb_btn-twitter(href='#')
+            i.fa.fa-twitter.visible-xs    
+            span.hidden-xs Twitter
+        .col-xs-4.col-sm-4
+          a.btn.btn-lg.btn-block.omb_btn-google(href='#')
+            i.fa.fa-google-plus.visible-xs  
+            span.hidden-xs Google+
+      .row.omb_row-sm-offset-3.omb_loginOr
+        .col-xs-12.col-sm-12
+          hr.omb_hrOr
+          span.omb_spanOr or
+      .row.omb_row-sm-offset-3
+        .col-xs-12.col-sm-12
+          form.omb_loginForm(action='', autocomplete='off', method='POST')
+            .input-group
+              span.input-group-addon
+                i.fa.fa-user
+              input.form-control(type='text', name='username', placeholder='email address')
+            span.help-block
+            .input-group
+              span.input-group-addon
+                i.fa.fa-lock
+              input.form-control(type='password', name='password', placeholder='Password')
+            span.help-block Password error
+            button.btn.btn-lg.btn-primary.btn-block(type='submit') Login
+      .row.omb_row-sm-offset-3
+        .col-xs-12.col-sm-3
+          label.checkbox
+            input(type='checkbox', value='remember-me')
+            | Remember Me
+        .col-xs-12.col-sm-3
+          p.omb_forgotPwd
+            a(href='#') Forgot password?
+    script.
+      var view = new friends.Views.LoginView();
+      var signUpView = new friends.Views.SignupView();

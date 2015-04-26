@@ -1,4 +1,5 @@
 var passport = require('../../config/passport');
+var path = require('path');
 var express = require('express');
 var route = express.Router();
 
@@ -9,6 +10,13 @@ route.get('/home',isAuthenticated,function(req,res){
 route.get('/login',function(req,res,next){
 	res.render('login',{});
 });
+
+route.get('/auth/facebook',passport.authenticate('facebook',{scope:'email'}));
+
+route.get('/auth/facebook/callback',passport.authenticate('facebook',{
+	successRedirect:'/loginsuccess',
+	failureRedirect:'/loginfailure'
+}))
 
 route.post('/login',passport.authenticate('local',{
 	successRedirect:'/loginsuccess',

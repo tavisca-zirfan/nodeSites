@@ -19,6 +19,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.set('view engine','jade');
 app.set('views',path.join(__dirname,'app/views'));
+app.use(express.static(__dirname+'/public'))
 app.use('/',route);
 app.use('/',user);
 app.listen(37261,function(){

@@ -8,8 +8,12 @@ route.get('/user',function(req,res,next){
 
 route.get('/user/create/:name',function(req,res,next){
 	var newUser = new User({
-		'name':req.params.name,
-		'password':'123456'
+		local:{'email':req.params.name,
+			'password':'123456'
+		},
+		profile:{
+			hobbies:[{display_name:'Cricket'}]
+		}
 	});
 	newUser.save(function(error){
 		if(error){
