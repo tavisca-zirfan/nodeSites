@@ -1,0 +1,17 @@
+html
+	head 
+		script(type="text/javascript",src="/scripts/jquery-2.0.2.min.js")
+		script(type="text/javascript",src="/scripts/socket.io.js")
+	body
+		h1
+		| Welcome to chat #{name}
+		div.display-chat(style="min-height:600px")
+		input(type="text",name="txtMsg",id="txtMsg",style="width:80%")
+		input(type="submit",name="btnSend",id="btnSend",value="Send")
+	script.
+		$(function(){
+			var socket = io();
+			$('#btnSend').click(function(){
+				socket.emit('message-recieved',$('#txtMsg').val());
+			});
+		})
