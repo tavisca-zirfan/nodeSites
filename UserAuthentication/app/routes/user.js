@@ -1,9 +1,15 @@
 var express = require('express');
+var userController = require('../controllers/userController');
 var route = express.Router();
 var User = require('../models/User');
+var passport = require('../../config/passport');
 
 route.get('/user',function(req,res,next){
 	res.render('user',{});
+});
+
+route.post('/api/user',passport.authenticate('local-signup'),function(req,res){
+	res.status(200).send({__id:req.user.id});
 });
 
 route.get('/user/create/:name',function(req,res,next){

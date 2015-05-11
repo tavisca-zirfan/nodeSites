@@ -6,6 +6,7 @@ html
     include shared/scripts.jade
     script(type="text/javascript", src="./scripts/Views/loginView.js")
     script(type="text/javascript", src="./scripts/Views/signupView.js")
+    script(type="text/javascript", src="./scripts/Model/userModel.js")
   body
     link(href='//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css', rel='stylesheet')
     .omb_login  
@@ -24,21 +25,21 @@ html
       .row
         .col-md-6
           .form-group
-            input.form-control.input-lg(type='text', name='FirstName', placeholder='First Name')
+            input.form-control.input-lg(type='text', name='firstName', id='firstName', placeholder='First Name')
         |                 
         .col-md-6
           .form-group
-            input.form-control.input-lg(type='text', name='LastName', placeholder='Last Name')
+            input.form-control.input-lg(type='text', name='lastName', id='lastName', placeholder='Last Name')
       |             
       .row
         .col-md-12
           .form-group
-            input.form-control.input-lg(type='text', name='Email', placeholder='Email')
+            input.form-control.input-lg(type='text', name='email',id='email', placeholder='Email')
       |             
       .row
         .col-md-12
           .form-group
-            input.form-control.input-lg(type='password', name='Password', placeholder='Password')
+            input.form-control.input-lg(type='password', name='password',id='password', placeholder='Password')
       |             
       .row
         .col-md-12
@@ -53,36 +54,36 @@ html
       .row
         .col-md-4
           .form-group                  
-            select.form-control.input-lg.col-md-4(name="date") 
+            select.form-control.input-lg.col-md-4(name="date",id='date') 
               <option>Date</option>
-              {{#for 1 31 1}}<option value="this">{{this}}</option>{{/for}}
+              {{#for 1 31 1}}<option value="{{this}}">{{this}}</option>{{/for}}
         .col-md-4
           .form-group
-            select.form-control.input-lg.col-md-4(name="date") 
+            select.form-control.input-lg.col-md-4(name="month",id='month') 
               <option>Month</option>
-              {{#months}}<option value="@index">{{this}}</option>{{/months}}
+              {{#months}}<option value="{{@index}}">{{this}}</option>{{/months}}
         .col-md-4
           .form-group
-            select.form-control.input-lg.col-md-4(name="date") 
+            select.form-control.input-lg.col-md-4(name="year",id='year') 
               <option>Year</option>
-              {{#forWhile year 110 -1}}<option value="@index">{{this}}</option>{{/forWhile}}
+              {{#forWhile year 110 -1}}<option value="{{this}}">{{this}}</option>{{/forWhile}}
           div
               
       |             
       .row
         .col-md-12
           .form-group
-            input(type='radio', name='Gender', value='M', checked='checked')
+            input.gender(type='radio', name='gender', value='male', checked='checked')
             |                         
-            label.input-lg(for='Gender') Male
+            label.input-lg(for='gender') Male
             |                         
-            input(type='radio', name='Gender', value='F')
+            input.gender(type='radio', name='gender', value='female')
             |                         
-            label.input-lg(for='Gender') Female
+            label.input-lg(for='gender') Female
       |             
       .row
         .col-md-12
-          input.btn.btn-success.btn-lg(type='submit', value='Sign Up')
+          input.btn.btn-success.btn-lg(type='submit',id='btnSignup', value='Sign Up')
 
     script#tmplLoginView(type="text/template")
       .row.omb_row-sm-offset-3.omb_socialButtons

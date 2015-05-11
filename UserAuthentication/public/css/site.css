@@ -1,4 +1,4 @@
-/*@media (min-width: 980px) {
+@media (min-width: 980px) {
   body {
     padding-top: 60px;
     padding-bottom: 40px;
@@ -146,7 +146,20 @@ div.img-div{
 .omb_login .omb_loginForm  .help-block {
     color: red;
 }
-
+.friend-list .friend-thumbnail img{
+    display: inline;
+    height: 40px;    
+}
+.friend-list .friend-thumbnail span{
+    padding-left: 20px;    
+}
+.friend-list .friend-thumbnail{
+    padding-top: 15px;
+}
+.friend-list .panel-body{
+    height:400px;
+    overflow-y: scroll;
+}
     
 @media (min-width: 768px) {
     .omb_login .omb_forgotPwd {

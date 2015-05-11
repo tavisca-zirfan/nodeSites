@@ -1,17 +1,14 @@
 ﻿window.friends.Model.Profile = Backbone.Model.extend({
-
+    urlRoot:'/api/profile/'
 });
 
 window.friends.Collection.Profile = Backbone.Collection.extend({
     model: friends.Model.Profile,
-    parse:function(response) {
-        return response.items;
-    },
     url: 'api/profile/',
     getFriends: function () {
         var that = this;
         $.ajax({
-            url: '/webapi/profile/GetFriends',
+            url: '/api/profile/getfriends',
             type: 'Get'
         }).done(function(response) {
             response.items.forEach(function (item, index) {
@@ -22,4 +19,4 @@ window.friends.Collection.Profile = Backbone.Collection.extend({
             that.trigger('sync', that);
         });
     }
-})
+});

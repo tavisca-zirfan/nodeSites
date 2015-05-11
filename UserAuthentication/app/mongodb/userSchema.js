@@ -4,13 +4,12 @@ var interestSchema = require('../mongodb/interestSchema');
 var userSchema = new mongoose.Schema({
 	local:{
 		email:{type:String,lowercase:true},
-		password:String,
+		password:String
 	},
 	facebook:{
 		profileId:String,
 		token:String,
-		email:String,
-		name:String
+		email:String
 	},
 	profile:{
 		name:{
@@ -18,8 +17,18 @@ var userSchema = new mongoose.Schema({
 			middleName:String,
 			lastName:String
 		},
+		history:{
+			school:String,
+			schoolLocation:String,
+			college:String,
+			collegeLocation:String,			
+		},
+		status:String,
+		perfectDate:String,
+		perfectFriend:String,
 		dob:Date,
-		about:String,
+		about:String,		
+		imageUrl:String,
 		location:{
 			city:String,
 			state:String,
@@ -29,6 +38,7 @@ var userSchema = new mongoose.Schema({
 				longitude:String
 			}
 		},
+		gender:{type:String,enum:['male','female']},
 		relationship:{type:String,enum:['single','committed','not sure','committed but available','none of your business']},
 		hobbies:[interestSchema],
 		books:[interestSchema],
@@ -40,7 +50,12 @@ var userSchema = new mongoose.Schema({
 	verified:Boolean,
 	friendRequestSent:[mongoose.Schema.ObjectId],
 	friendRequestRecieved:[mongoose.Schema.ObjectId],
-	friends:[mongoose.Schema.ObjectId]
+	friends:[mongoose.Schema.ObjectId],
+	accountInfo:{
+		joined:Date,
+		lastSeen:Date,
+		frequency:Number
+	}
 },{
 	collection:'users'
 });

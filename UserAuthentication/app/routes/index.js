@@ -11,17 +11,24 @@ route.get('/login',function(req,res,next){
 	res.render('login',{});
 });
 
+route.get('/logout',function(req,res,next){
+	req.logout();
+	res.redirect('/login');
+});
+
 route.get('/auth/facebook',passport.authenticate('facebook',{scope:'email'}));
 
 route.get('/auth/facebook/callback',passport.authenticate('facebook',{
-	successRedirect:'/loginsuccess',
+	successRedirect:'/profile',
 	failureRedirect:'/loginfailure'
 }))
 
-route.post('/login',passport.authenticate('local',{
-	successRedirect:'/loginsuccess',
+route.post('/login',passport.authenticate('local-signin',{
+	successRedirect:'/profile',
 	failureRedirect:'/loginfailure'
 }));
+
+
 
 route.get('/loginsuccess',function(req,res,next){
 	res.send(req.user);
