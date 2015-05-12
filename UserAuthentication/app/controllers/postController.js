@@ -2,11 +2,11 @@ var Post = require('../models/Post');
 
 module.exports={
 	delete:function(user,id,callback){
-		Post.find({$and:[{_id:id},{$or:[{from:user._id},{to:user._id}]}]}).remove(function(error){
+		Post.find({$and:[{_id:id},{$or:[{from:user._id},{to:user._id}]}]}).remove(function(error,res){
 			if(error)
-				callback(false);
+				callback(null,error);
 			else
-				callback(true);
+				callback(res,null);
 		});
 	},
 	addComment:function(user,postId,comment,callback){
@@ -21,7 +21,7 @@ module.exports={
 		});
 	},
 	addLike:function(user,postId,callback){
-		Post.findByIdAndUpdate(postId,{$pull:{"dislikes":user._id},$push:{"likes":user._id}},{safe:true,new:true},function(err,model){
+		Post.findByIdAndUpdate(postId,{$pull:{"dislikes":user._id,"likes":user._id},$push:{"likes":user._id}},{safe:true,new:true},function(err,model){
 			callback(model);
 		});
 	},
@@ -31,7 +31,7 @@ module.exports={
 		});
 	},
 	addDislike:function(user,postId,callback){
-		Post.findByIdAndUpdate(postId,{$pull:{"likes":user._id},$push:{"dislikes":user._id}},{safe:true,new:true},function(err,model){
+		Post.findByIdAndUpdate(postId,{$pull:{"likes":user._id,"dislikes":user._id},$push:{"dislikes":user._id}},{safe:true,new:true},function(err,model){
 			callback(model);
 		});
 	},
@@ -42,7 +42,7 @@ module.exports={
 	},
 	addCommentLike:function(user,postId,commentId,callback){
 		Post.update({_id:postId,'comments._id':commentId},
-			{$pull:{"comments.$.dislikes":user._id},$push:{"comments.$.likes":user._id}},
+			{$pull:{"comments.$.dislikes":user._id,"comments.$.likes":user._id},$push:{"comments.$.likes":user._id}},
 			{safe:true,new:true},function(err,model){
 			if(err)callback(err)
 				else
@@ -60,7 +60,7 @@ module.exports={
 	},
 	addCommentDislike:function(user,postId,commentId,callback){
 		Post.update({_id:postId,'comments._id':commentId},
-			{$pull:{"comments.$.likes":user._id},$push:{"comments.$.dislikes":user._id}},
+			{$pull:{"comments.$.likes":user._id,"comments.$.dislikes":user._id},$push:{"comments.$.dislikes":user._id}},
 			{safe:true,new:true},function(err,model){
 			if(err)callback(err)
 				else

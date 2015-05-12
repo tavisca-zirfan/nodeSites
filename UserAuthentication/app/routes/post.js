@@ -3,32 +3,126 @@ var route = express.Router();
 var TextPost = require('../models/TextPost');
 var EventPost = require('../models/EventPost');
 var postController = require('../controllers/postController');
+var textPostController = require('../controllers/postController');
+var eventPostController = require('../controllers/eventController');
 
-route.get('/post/create',isAuthenticated,function(req,res){
-	var post = new TextPost({
-		text:'My first post',
-		from:req.user._id,
-		createdAt:Date.now(),
-		updatedAt:Date.now(),
-		likes:[req.user._id],
-		dislikes:[req.user._id],
-		comments:[{
-			commentText:'First comment',
-			from:req.user._id,
-			createdAt:Date.now(),
-			likes:[req.user._id],
-			dislikes:[req.user._id],
-		}]
-	});
-	post.save(function(error){
-		if(error)
-			res.send("Post could not be created");
-		else{
-			
-				res.send("created text post");
+route.post('/textpost',isAuthenticated,function(req,res){
+	textPostController.create(req.user,req.body,(function(post,error){
+		if(error){
+			res.status(302).send(error);
 		}
+		res.status(200).send(post);
+	}));	
+});
+
+route.post('/eventpost',isAuthenticated,function(req,res){
+	eventPostController.create(req.user,req.body,(function(post,error){
+		if(error){
+			res.status(302).send(error);
+		}
+		res.status(200).send(post);
+	}));	
+});
+
+route.delete('/post/:id',isAuthenticated,function(req,res){
+	postController.delete(req.user,req.params.id,function(response,error){
+		if(error){
+			res.status(302).send(error);
+		}
+		res.status(200).send({success:true});
 	});
-	
+});
+
+route.post('/post/:postid/comment',isAuthenticated,function(req,res){
+	postController.addComment(req.user,req.params.postid,req.body,function(comment,error){
+		if(error){
+			res.status(302).send(error);
+		}
+		res.status(200).send(comment);
+	});
+});
+
+route.delete('/post/:postid/comment/:id',isAuthenticated,function(req,res){
+	postController.removeComment(req.user,req.params.postid,req.params.id,function(response,error){
+		if(error){
+			res.status(302).send(error);
+		}
+		res.status(200).send({success:true});
+	});
+});
+
+route.post('/post/:postid/like',isAuthenticated,function(req,res){
+	postController.addLike(req.user,req.params.postid,function(like,error){
+		if(error){
+			res.status(302).send(error);
+		}
+		res.status(200).send(like);
+	});
+});
+
+route.delete('/post/:postid/like/:id',isAuthenticated,function(req,res){
+	postController.removeLike(req.user,req.params.postid,function(response,error){
+		if(error){
+			res.status(302).send(error);
+		}
+		res.status(200).send({success:true});
+	});
+});
+
+route.post('/post/:postid/dislike',isAuthenticated,function(req,res){
+	postController.addDislike(req.user,req.params.postid,function(dislike,error){
+		if(error){
+			res.status(302).send(error);
+		}
+		res.status(200).send(dislike);
+	});
+});
+
+route.delete('/post/:postid/dislike/:id',isAuthenticated,function(req,res){
+	postController.removeDislike(req.user,req.params.postid,function(response,error){
+		if(error){
+			res.status(302).send(error);
+		}
+		res.status(200).send({success:true});
+	});
+});
+
+///////////////////////
+
+route.post('/post/:postid/comment/:commentid/like',isAuthenticated,function(req,res){
+	postController.addCommentLike(req.user,req.params.postid,req.params.commentid,function(like,error){
+		if(error){
+			res.status(302).send(error);
+		}
+		res.status(200).send(like);
+	});
+});
+
+route.delete('/post/:postid/comment/:commentid/like/:id',isAuthenticated,function(req,res){
+	postController.removeLike(req.user,req.params.postid,req.params.commentid,function(response,error){
+		if(error){
+			res.status(302).send(error);
+		}
+		res.status(200).send({success:true});
+	});
+});
+
+route.post('/post/:postid/comment/:commentid/dislike',isAuthenticated,function(req,res){
+	postController.addDislike(req.user,req.params.postid,req.params.commentid,function(dislike,error){
+		if(error){
+			res.status(302).send(error);
+		}
+		res.status(200).send(dislike);
+	});
+});
+
+route.delete('/post/:postid/comment/:commentid/dislike/:id',isAuthenticated,function(req,res){
+	postController.removeDislike(req.user,req.params.postid,req.params.commentid,function(response,error){
+		if(error){
+			res.status(302).send(error);
+		}
+		res.status(200).send({success:true});
+	});
 });
 
 route.get('/event/create',isAuthenticated,function(req,res){
