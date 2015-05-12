@@ -1,18 +1,11 @@
-﻿window.friends.Model.Comment = window.friends.Model.PostLike.extend({
-    defaults: {
-        postType: 'Comment'
-    },
-    urlRoot: '/api/comment'
+﻿window.friends.Model.Comment = Backbone.Model.extend({
+
 });
 
 window.friends.Collection.Comment = Backbone.Collection.extend({
-    model: friends.Model.Comment,
-    parse: function (results) {
-        if(results.items)
-            return results.items;
-        else {
-            return results;
-        }
-    },
-    url:'/api/comment'
+    model: friends.Model.Comment,    
+    url:function(){
+        var baseUrl = this.parent.url()+this.parent.id+'/'
+        return baseUrl+'comment/';
+    }
 })

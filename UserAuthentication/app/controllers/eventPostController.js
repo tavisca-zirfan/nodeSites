@@ -1,8 +1,8 @@
-var TextPost = require('../models/TextPost');
+var EventPost = require('../models/EventPost');
 
 module.exports={
-	create:function(user,textPost,callback){
-		var post = new TextPost(textPost);
+	create:function(user,eventPost,callback){
+		var post = new EventPost(eventPost);
 		post.from = user._id;
 		post.createdAt=Date.now();
 		post.updatedAt=Date.now();

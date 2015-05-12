@@ -9,6 +9,28 @@ module.exports={
 				callback(res,null);
 		});
 	},
+	get:function(query,callback){		
+		Post.find(query).populate([{path:'comments.from',model:'users',select:'local.email'},{path:'from',model:'users',select:'local.email'},{path:'to',model:'users',select:'local.email'}])
+			.select({comments:{$slice:1}})
+			.exec(function(err,resPost){
+			if(err){
+				callback(null,err)
+			}
+			else{
+				callback(resPost,null);
+			}
+		});		
+	},
+	getById:function(id,callback){		
+		Post.findById(id).populate([{path:'comments.from',model:'users',select:'local.email'},{path:'from',model:'users',select:'local.email'},{path:'to',model:'users',select:'local.email'}],function(err,resPost){
+			if(err){
+				callback(null,err)
+			}
+			else{
+				callback(resPost,null);
+			}
+		});		
+	},
 	addComment:function(user,postId,comment,callback){
 		var comment = {commentText:comment,from:user._id,createdAt:Date.now(),likes:[],dislikes:[]};
 		Post.findByIdAndUpdate(postId,{$push:{"comments":comment},$set:{updatedAt:Date.now()}},{safe:true,new:true},function(err,model){

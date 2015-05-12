@@ -1,43 +1,73 @@
-﻿
-
-window.friends.Model.Post = window.friends.Model.PostLike.extend({
+﻿window.friends.Model.Post = Backbone.Model.extend({
     renderView:function($container) {
         this.view = new window.friends.Views.BasePostView({ model: this, $container: $container });
     },
     relations: {
         comments: window.friends.Collection.Comment,
+        likes:friends.Collection.Likes,
+        dislikes:friends.Collection.Dislikes
     },
     parse:function(model) {
         if (!model.comments) model.comments = [];
+        if (!model.likes) model.likes = [];
+        if (!model.dislikes) model.dislikes = [];
         return model;
-    }
+    },
+    urlRoot:'/api/post/',
     
 });
 
 window.friends.Model.TextPost = friends.Model.Post.extend({
     defaults: {
-        postType: 'PostText'
+        //postType: 'PostText'
     },
     renderView: function ($container) {
         this.view = new window.friends.Views.TextPostView({ model: this, $container: $container });
     },
-    urlRoot: '/api/textpost'
+    methodUrl: {
+        'create': '/api/textpost/'
+    },
+
+    sync: function(method, model, options) {
+        if (model.methodUrl && model.methodUrl[method.toLowerCase()]) {
+            options = options || {};
+            options.url = model.methodUrl[method.toLowerCase()];
+        }
+        Backbone.sync(method, model, options);
+    }
 });
 
-window.friends.Collection.TextPost = Backbone.Collection.extend({
-    model: friends.Model.TextPost,
-    parse: function (result) {
-        return result.items;
+window.friends.Model.EventPost = friends.Model.Post.extend({
+    defaults: {
+        //postType: 'PostText'
     },
-    url: '/api/textpost'
+    renderView: function ($container) {
+        this.view = new window.friends.Views.TextPostView({ model: this, $container: $container });
+    },
+    methodUrl: {
+        'create': '/api/eventpost/'
+    },
+
+    sync: function(method, model, options) {
+        if (model.methodUrl && model.methodUrl[method.toLowerCase()]) {
+            options = options || {};
+            options.url = model.methodUrl[method.toLowerCase()];
+        }
+        Backbone.sync(method, model, options);
+    }
 });
+
+
 
 window.friends.Collection.Post = Backbone.Collection.extend({
     model: function (m, options) {
         var returnModel;
-        switch (m.postType.toLowerCase()) {
-            case 'posttext':
+        switch (m._type.toLowerCase()) {
+            case 'textpost':
                 returnModel = new friends.Model.TextPost(m, options);
+                break;
+            case 'eventpost':
+                returnModel = new friends.Model.EventPost(m, options);
                 break;
             default:
                 returnModel = new friends.Model.Post(m, options);
@@ -45,8 +75,8 @@ window.friends.Collection.Post = Backbone.Collection.extend({
         }
         return returnModel;
     },
-    url:'/api/post',
+    url:'/api/post/',
     parse:function(result) {
-        return result.items;
+        return result;
     }
 })
