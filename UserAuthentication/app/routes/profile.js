@@ -3,6 +3,8 @@ var path = require('path');
 var express = require('express');
 var userController = require('../controllers/userController');
 var route = express.Router();
+var _ = require('underscore');
+var defaultPaging = require('../utils/pagination');
 
 route.get('/profile/:id?',isAuthenticated,function(req,res){
 	var currentUser = {
@@ -19,15 +21,23 @@ route.get('/profile/:id?',isAuthenticated,function(req,res){
 });
 
 route.get('/api/profile',isAuthenticated,function(req,res){
-	userController.getAll({},null,function(users,error){
+	var filter = {};
+	var pagination = _.extend({},defaultPaging,req.params.pagination);
+	if(req.params.name) filter.name = req.params.name;
+	if(req.params.listOfIds) var listOfIds = req.params.listOfIds;
+	userController.getAll({},filter,listOfIds,pagination,function(users,error){
 		if(error){
 			res.status(302).send(error);
 		}
 		resultArray = [];
 		users.forEach(function(user,index){
-			resultArray.push({profile:user.profile,_id:user._id,friends:user.friends});
+			var userJSON = user.toJSON();
+			userJSON.profile._id = userJSON._id;
+			userJSON.profile.accountInfo = userJSON.accountInfo;
+			userJSON.profile.friends = userJSON.friends;
+			resultArray.push(userJSON.profile);
 		});
-		res.status(200).send(users);
+		res.status(200).send(resultArray);
 	});
 	
 });
@@ -37,9 +47,10 @@ route.get('/api/profile/:id',isAuthenticated,function(req,res,next){
 		if(error){
 			res.status(404).send({message:'User not found'});
 		}
-		user.profile._id = user._id;
-		user.profile.accountInfo = user.accountInfo;
-		res.status(200).send(user.profile);
+		var userJSON = user.toJSON();
+		userJSON.profile._id = userJSON._id;
+		userJSON.profile.accountInfo = userJSON.accountInfo;
+		res.status(200).send(userJSON.profile);
 	});
 });
 

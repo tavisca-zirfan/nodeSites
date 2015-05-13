@@ -1,4 +1,5 @@
 ﻿window.friends.Model.Profile = Backbone.Model.extend({
+    idAttribute:'_id',
     urlRoot:'/api/profile/'
 });
 

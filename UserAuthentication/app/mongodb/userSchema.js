@@ -57,7 +57,8 @@ var userSchema = new mongoose.Schema({
 		frequency:Number
 	}
 },{
-	collection:'users'
+	collection:'users',
+	strict:true,
 });
 
 module.exports = userSchema;

@@ -4,8 +4,8 @@ var commentSchema = mongoose.Schema({
 	commentText:String,
 	from:{type:mongoose.Schema.ObjectId,ref:'users'},
 	createdAt:Date,
-	likes:[{type:mongoose.Schema.ObjectId,ref:'users'}],
-	dislikes:[{type:mongoose.Schema.ObjectId,ref:'users'}]
+	likes:[{type:mongoose.Schema.ObjectId,ref:'users',unique:true}],
+	dislikes:[{type:mongoose.Schema.ObjectId,ref:'users',unique:true}]
 },{
 	collection:'comments'
 });

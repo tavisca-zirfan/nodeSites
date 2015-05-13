@@ -1,6 +1,7 @@
 var User = require('../models/User');
 var https = require('https');
 
+
 function createProfile(user,userVM){
 
 }
@@ -95,10 +96,17 @@ module.exports = {
 	update:function(query,updates,options,callback){
 		User.update(query,updates,options,callback);
 	},
-	getAll:function(query,list,callback){
+	getAll:function(qry,filter,list,paging,callback){
+		var query = qry||{};
+		if(filter.name){
+			query["$or"] = [{'firstName' : new RegExp(filter.name, 'i')},{'middleName' : new RegExp(filter.name, 'i')},{'lastName' : new RegExp(filter.name, 'i')}];
+		}
 		var userQuery = User.find(query);
 		if(list){
 			userQuery.where('_id').in(list);
+		}
+		if(!paging.all){
+			userQuery.skip((paging.pageNumber-1)*10).limit(paging.recordsPerPage);
 		}
 		userQuery.select('profile friends accountInfo');
 		userQuery.exec(function(error,users){

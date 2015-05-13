@@ -8,12 +8,17 @@ var postSchema = mongoose.Schema({
 	to:{type:mongoose.Schema.ObjectId,ref:'users'},
 	createdAt:Date,
 	updatedAt:Date,
-	likes:[{type:mongoose.Schema.ObjectId,ref:'users'}],
-	dislikes:[{type:mongoose.Schema.ObjectId,ref:'users'}],
-	comments:[commentSchema]
+	likes:[{type:mongoose.Schema.ObjectId,ref:'users',unique:true}],
+	dislikes:[{type:mongoose.Schema.ObjectId,ref:'users',unique:true}],
+	comments:[commentSchema],
+	noOfComments:Number
 },{
 	collection:'posts',
 	discriminatorKey:'_type'
+});
+
+postSchema.path('noOfComments').set(function(value){
+	return this.comments.length;
 });
 
 module.exports = postSchema;

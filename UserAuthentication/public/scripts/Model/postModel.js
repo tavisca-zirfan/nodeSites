@@ -1,4 +1,5 @@
 ﻿window.friends.Model.Post = Backbone.Model.extend({
+    idAttribute:'_id',
     renderView:function($container) {
         this.view = new window.friends.Views.BasePostView({ model: this, $container: $container });
     },
@@ -18,6 +19,7 @@
 });
 
 window.friends.Model.TextPost = friends.Model.Post.extend({
+    idAttribute:'_id',
     defaults: {
         //postType: 'PostText'
     },
@@ -37,7 +39,13 @@ window.friends.Model.TextPost = friends.Model.Post.extend({
     }
 });
 
+window.friends.Collection.TextPost = Backbone.Collection.extend({
+    model:friends.Model.TextPost,
+    url:'/api/textpost/'
+});
+
 window.friends.Model.EventPost = friends.Model.Post.extend({
+    idAttribute:'_id',
     defaults: {
         //postType: 'PostText'
     },

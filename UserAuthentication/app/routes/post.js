@@ -6,8 +6,13 @@ var postController = require('../controllers/postController');
 var textPostController = require('../controllers/textPostController');
 var eventPostController = require('../controllers/eventPostController');
 
+route.get('/post/',isAuthenticated,function(req,res){
+	res.render('post',{user:req.user,sidebarNotRequired:true});
+});
+
 route.post('/api/textpost',isAuthenticated,function(req,res){
 	textPostController.create(req.user,req.body,(function(post,error){
+		console.log("creating text post");
 		if(error){
 			res.status(302).send(error);
 		}
@@ -54,7 +59,7 @@ route.delete('/api/post/:id',isAuthenticated,function(req,res){
 });
 
 route.post('/api/post/:postid/comment',isAuthenticated,function(req,res){
-	postController.addComment(req.user,req.params.postid,req.body,function(comment,error){
+	postController.addComment(req.user,req.params.postid,req.body.commentText,function(comment,error){
 		if(error){
 			res.status(302).send(error);
 		}
@@ -119,7 +124,7 @@ route.post('/api/post/:postid/comment/:commentid/like',isAuthenticated,function(
 });
 
 route.delete('/api/post/:postid/comment/:commentid/like/:id',isAuthenticated,function(req,res){
-	postController.removeLike(req.user,req.params.postid,req.params.commentid,function(response,error){
+	postController.removeCommentLike(req.user,req.params.postid,req.params.commentid,function(response,error){
 		if(error){
 			res.status(302).send(error);
 		}
@@ -128,7 +133,7 @@ route.delete('/api/post/:postid/comment/:commentid/like/:id',isAuthenticated,fun
 });
 
 route.post('/api/post/:postid/comment/:commentid/dislike',isAuthenticated,function(req,res){
-	postController.addDislike(req.user,req.params.postid,req.params.commentid,function(dislike,error){
+	postController.addCommentDislike(req.user,req.params.postid,req.params.commentid,function(dislike,error){
 		if(error){
 			res.status(302).send(error);
 		}
@@ -137,7 +142,7 @@ route.post('/api/post/:postid/comment/:commentid/dislike',isAuthenticated,functi
 });
 
 route.delete('/api/post/:postid/comment/:commentid/dislike/:id',isAuthenticated,function(req,res){
-	postController.removeDislike(req.user,req.params.postid,req.params.commentid,function(response,error){
+	postController.removeCommentDislike(req.user,req.params.postid,req.params.commentid,function(response,error){
 		if(error){
 			res.status(302).send(error);
 		}
