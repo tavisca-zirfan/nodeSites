@@ -7,7 +7,7 @@ var textPostController = require('../controllers/textPostController');
 var eventPostController = require('../controllers/eventPostController');
 
 route.get('/post/',isAuthenticated,function(req,res){
-	res.render('post',{user:req.user,sidebarNotRequired:true});
+	res.render('post',{user:req.user,sidebarNotRequired:false});
 });
 
 route.post('/api/textpost',isAuthenticated,function(req,res){

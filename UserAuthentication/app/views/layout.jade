@@ -39,20 +39,23 @@ html
 									a(href='#') One more separated link
 					span.pull-right Name
 			// /.nav-collapse
-		script#profileFriendListTemplate(type="text/template")
+		script#profileFriendSectionTemplate(type="text/template")
 			.panel.panel-default.friend-list
 				.panel-heading
 					.card-title 
-						|  Friends         
-					
+						|  Friends 
+				.search
+					input.input-lg(type='text',style='width:100%',id='friendSearch')
 				.panel-body
-					{{#each profiles}}
-					.friend-thumbnail
-						img.img.img-responsive.img-circle(src="{{attributes.profile.imageUrl}}")
-						span
-							a(href="/profile/{{attributes._id}}")
-							|	{{attributes.profile.name.firstName}} {{attributes.profile.name.lastName}}
-					{{/each}}
+					
+		script#profileFriendListTemplate(type="text/template")			
+			{{#each profiles}}
+			.friend-thumbnail
+				img.img.img-responsive.img-circle(src="{{attributes.imageUrl}}")
+				span
+					a(href="/profile/{{attributes._id}}")
+					|	{{attributes.name.firstName}} {{attributes.name.lastName}}
+			{{/each}}
 		div
 			noscript
 				.alert

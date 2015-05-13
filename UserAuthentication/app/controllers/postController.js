@@ -10,7 +10,7 @@ module.exports={
 		});
 	},
 	get:function(query,callback){		
-		Post.find(query).populate([{path:'comments.from',model:'users',select:'local.email'},{path:'from',model:'users',select:'local.email'},{path:'to',model:'users',select:'local.email'}])
+		Post.find(query).populate([{path:'comments.from',model:'users',select:'profile.name profile.imageUrl'},{path:'from',model:'users',select:'profile.name profile.imageUrl'},{path:'to',model:'users',select:'profile.name profile.imageUrl'}])
 			//.select({comments:{$slice:1}})
 			.exec(function(err,resPost){
 			if(err){
@@ -22,7 +22,7 @@ module.exports={
 		});		
 	},
 	getById:function(id,callback){		
-		Post.findById(id).populate([{path:'comments.from',model:'users',select:'local.email'},{path:'from',model:'users',select:'local.email'},{path:'to',model:'users',select:'local.email'}],function(err,resPost){
+		Post.findById(id).populate([{path:'comments.from',model:'users',select:'profile.name profile.imageUrl'},{path:'from',model:'users',select:'profile.name profile.imageUrl'},{path:'to',model:'users',select:'profile.name'}],function(err,resPost){
 			if(err){
 				callback(null,err)
 			}

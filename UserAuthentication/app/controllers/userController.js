@@ -96,10 +96,10 @@ module.exports = {
 	update:function(query,updates,options,callback){
 		User.update(query,updates,options,callback);
 	},
-	getAll:function(qry,filter,list,paging,callback){
+	getAll:function(qry,filter,list,paging,sortBy,callback){
 		var query = qry||{};
 		if(filter.name){
-			query["$or"] = [{'firstName' : new RegExp(filter.name, 'i')},{'middleName' : new RegExp(filter.name, 'i')},{'lastName' : new RegExp(filter.name, 'i')}];
+			query["$or"] = [{'profile.name.firstName' : new RegExp(filter.name, 'i')},{'profile.name.middleName' : new RegExp(filter.name, 'i')},{'profile.name.lastName' : new RegExp(filter.name, 'i')}];
 		}
 		var userQuery = User.find(query);
 		if(list){
@@ -109,6 +109,11 @@ module.exports = {
 			userQuery.skip((paging.pageNumber-1)*10).limit(paging.recordsPerPage);
 		}
 		userQuery.select('profile friends accountInfo');
+		if(sortBy){
+			sortProperty = {};
+			sortProperty[sortBy] = 'descending'
+			userQuery.sort(sortProperty);
+		}
 		userQuery.exec(function(error,users){
 			if(error)
 				callback(null,error);
