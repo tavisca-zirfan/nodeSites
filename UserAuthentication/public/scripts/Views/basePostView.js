@@ -4,7 +4,7 @@
         if (!window.friends.hbTemplate.BasePostView) window.friends.hbTemplate.BasePostView = Handlebars.compile($(this.options.baseTemplate).html());
         if (!window.friends.hbTemplate.ChildPostView) window.friends.hbTemplate.ChildPostView = Handlebars.compile($(this.options.childTemplate).html());
         //this.postType = this.model.get('postType');
-        //this.listenTo(this.model, 'sync', this.update);
+        this.listenTo(this.model, 'sync', this.render);
         this.$container = param.$container;
         this.render();
     },
@@ -22,7 +22,7 @@
         this.$container.prepend(this.$card);
     },
     _renderCommentList:function(){
-        this.commentListView = new friends.Views.CommentListView({collection:this.model.get('comments'),$container: $('.comments', this.$card)});
+        this.commentListView = new friends.Views.CommentListView({collection:this.model.get('comments'),$container: $('.commentsSection', this.$card)});
     },
     update: function () {
         var that = this;

@@ -18,18 +18,26 @@
         var that = this;
         $('.glyphicon-thumbs-up', this.$el).on('click', function() {
             var currentLike = that.model.attributes.likes.get(friends.bag.user._id);
+            var currentDislike = that.model.attributes.dislikes.get(friends.bag.user._id);
             if(currentLike && currentLike.id){
                 currentLike.destroy();
             }else{
+                if(currentDislike && currentDislike.id){
+                    that.model.attributes.dislikes.remove(currentDislike,{silent:true});
+                }
                 that.model.attributes.likes.create({});
             }
             
         });
         $('.glyphicon-thumbs-down', this.$el).on('click', function () {
             var currentDislike = that.model.attributes.dislikes.get(friends.bag.user._id);
+            var currentLike = that.model.attributes.likes.get(friends.bag.user._id);
             if(currentDislike && currentDislike.id){
                 currentDislike.destroy();
             }else{
+                if(currentLike && currentLike.id){
+                    that.model.attributes.likes.remove(currentLike,{silent:true});
+                }
                 that.model.attributes.dislikes.create({});
             }
         });

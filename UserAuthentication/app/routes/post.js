@@ -20,8 +20,15 @@ route.post('/api/textpost',isAuthenticated,function(req,res){
 	}));	
 });
 
-route.get('/api/post',isAuthenticated,function(req,res){	
-	postController.get({},function(posts,error){
+route.get('/api/post',isAuthenticated,function(req,res){
+	var filter = {};
+	if(req.query.lastUpdate){
+		filter.lastUpdate = new Date(req.query.lastUpdate);
+	}
+	if(req.query.byUser){
+		filter.userId = req.query.byUser;
+	}	
+	postController.get(filter,function(posts,error){
 		if(error){
 			res.status(302).send(error);
 		}

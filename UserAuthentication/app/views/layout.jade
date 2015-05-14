@@ -64,13 +64,17 @@ html
 			.row
 				if !sidebarNotRequired
 					.col-md-2.pad25-left.left-sidebar
-				#content.col-md-12
-					block content
+					#content.col-md-10
+						block content
+				else
+					#content.col-md-12
+						block content
 			.row.footer
 				block footer
 		include shared/scripts.jade
 		script.
 			friends.bag.user = !{JSON.stringify(user)}
+			friends.bag.profile = new friends.Model.Profile($.extend({},friends.bag.user.profile,{_id:friends.bag.user._id,accountInfo:friends.bag.user.accountInfo,friends:friends.bag.user.friends}));
 		block scripts
 		
 

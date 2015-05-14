@@ -11,17 +11,18 @@
         this.listenTo(this.collection, 'sync', this.renderPostList);
         this.listenTo(this.collection, 'add', this._addPost);
         this.collection.fetch();
-        // that.fetchTime = new Date().toUTCString();
-        // setInterval(function () {
-        //     var filters = [];
-        //     if (that.lastUpdate) {
-        //         filters.push(new Filter('lastupdate', that.lastUpdate));
-        //     }
-        //     var searchFilter = friends.utils.Filter.createFilter(filters);
-        //     that.postList.reset();
-        //     that.fetchTime = new Date().toUTCString();
-        //     that.postList.fetch({ data: searchFilter });
-        // },10000);
+        var currentTime = new Date();
+        currentTime.setSeconds(currentTime.getSeconds()-3);
+        that.fetchTime = currentTime.toUTCString();
+        //if()
+        setInterval(function () {                      
+            var currentTime = new Date();
+            currentTime.setSeconds(currentTime.getSeconds()-3);
+            that.fetchTime = currentTime.toUTCString();
+            var data={};
+            if(that.lastUpdate) data['lastUpdate'] = that.lastUpdate;
+            that.collection.fetch({remove:false, data: data});
+        },10000);
     },
     render:function() {
         this.$el.html($(friends.hbTemplate.PostListView()));
@@ -29,9 +30,9 @@
     },
     renderPostList:function(posts) {
         var that = this;
-        //_.forEach(posts.models, function (post) {
-            
-        //});
+        _.forEach(posts.models, function (post) {
+            that._addPost(post);
+        });
         that.lastUpdate = that.fetchTime;
     },
     _addPost: function (post) {
@@ -55,6 +56,7 @@
                 var model = new friends.Model.TextPost({text:text,to:friends.bag.user._id});
                 model.save();
                 model.on('sync', function(m) {
+                    m.attributes.from = {profile:friends.bag.profile.toJSON()}; 
                     that.collection.add(m);
                     $('.post-message', that.$el).val('');
                 }); 

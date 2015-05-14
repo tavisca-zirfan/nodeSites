@@ -4,7 +4,7 @@ window.friends.Views.FriendListView = Backbone.View.extend({
     initialize:function(params) {
         var that = this;
         params = params||{};
-        this.profile = params.profile||new friends.Model.Profile($.extend({},friends.bag.user.profile,{_id:friends.bag.user._id,accountInfo:friends.bag.user.accountInfo,friends:friends.bag.user.friends}));
+        this.profile = params.profile|| friends.bag.profile;
         if (!friends.hbTemplate.FriendListView) friends.hbTemplate.FriendListView = Handlebars.compile($(this.template).html());
         this.$el.html(Handlebars.compile($('#profileFriendSectionTemplate').html())());
         this.collection = new friends.Collection.Profile();

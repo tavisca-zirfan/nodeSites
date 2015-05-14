@@ -2,7 +2,11 @@
     initialize: function(param) {
         this.options= $.extend({}, this.options,param);
         if (!window.friends.hbTemplate.CommentView) window.friends.hbTemplate.CommentView = Handlebars.compile($(this.template).html());
+        if(typeof this.model.attributes.from == "string"){
+            this.model.attributes.from = {profile:friends.bag.profile.toJSON()};
+        }
         this.listenTo(this.model,'destroy',this.remove);
+        this.listenTo(this.model,'change',this.render);
         this.$container = param.$container;
         this.render();
     },

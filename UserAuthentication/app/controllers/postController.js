@@ -9,10 +9,17 @@ module.exports={
 				callback(res,null);
 		});
 	},
-	get:function(query,callback){		
-		Post.find(query).populate([{path:'comments.from',model:'users',select:'profile.name profile.imageUrl'},{path:'from',model:'users',select:'profile.name profile.imageUrl'},{path:'to',model:'users',select:'profile.name profile.imageUrl'}])
-			//.select({comments:{$slice:1}})
-			.exec(function(err,resPost){
+	get:function(filter,callback){		
+		var query = {};
+		if(filter.userId){
+			query['$or'] = [{from:filter.userId},{to:filter.userId}];
+		}
+		var postQry = Post.find(query).populate([{path:'comments.from',model:'users',select:'profile.name profile.imageUrl'},{path:'from',model:'users',select:'profile.name profile.imageUrl'},{path:'to',model:'users',select:'profile.name profile.imageUrl'}]);
+			//postQry.select({comments:{$slice:1}})
+			if(filter.lastUpdate){
+				postQry.where('updatedAt').gte(filter.lastUpdate)
+			}
+			postQry.exec(function(err,resPost){
 			if(err){
 				callback(null,err)
 			}
