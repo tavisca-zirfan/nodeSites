@@ -9,6 +9,7 @@ var route = require('./app/routes/index');
 var user = require('./app/routes/user');
 var post = require('./app/routes/post');
 var profile = require('./app/routes/profile');
+var chatController = require('./app/controllers/chatController');
 var multer = require('multer');
 var fs = require('fs');
 var app = express();
@@ -52,11 +53,17 @@ app.use(multer({
 }));
 app.set('view engine','jade');
 app.set('views',path.join(__dirname,'app/views'));
-app.use(express.static(__dirname+'/public'))
+app.use(express.static(__dirname+'/public'));
+var io = require('socket.io')(app.listen(37261,function(){
+			console.log('Server started on port 37261');
+		})
+	);
+app.use('/',function(req,res,next){
+	req.io = io;
+	chatController(req);
+	next();
+});
 app.use('/',route);
 app.use('/',user);
 app.use('/',profile);
 app.use('/',post);
-app.listen(37261,function(){
-	console.log('Server Started');
-});

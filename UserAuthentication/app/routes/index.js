@@ -1,6 +1,7 @@
 var passport = require('../../config/passport');
 var path = require('path');
 var express = require('express');
+var chatController = require('../controllers/chatController');
 var route = express.Router();
 
 route.get('/home',isAuthenticated,function(req,res){
@@ -10,6 +11,8 @@ route.get('/home',isAuthenticated,function(req,res){
 route.get('/login',function(req,res,next){
 	res.render('login',{});
 });
+
+
 
 route.get('/logout',function(req,res,next){
 	req.logout();

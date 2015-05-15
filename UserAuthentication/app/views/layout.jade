@@ -74,7 +74,13 @@ html
 		include shared/scripts.jade
 		script.
 			friends.bag.user = !{JSON.stringify(user)}
-			friends.bag.profile = new friends.Model.Profile($.extend({},friends.bag.user.profile,{_id:friends.bag.user._id,accountInfo:friends.bag.user.accountInfo,friends:friends.bag.user.friends}));
+			friends.bag.profile = new friends.Model.Profile($.extend({},friends.bag.user.profile,{_id:friends.bag.user._id,accountInfo:friends.bag.user.accountInfo,friends:friends.bag.user.friends}));			
+			//- $(function(){
+			//- 	var socket = io();
+			//- 	$('#btnSend').click(function(){
+			//- 		socket.emit('message-recieved',$('#txtMsg').val());
+			//- 	});
+			//- })
 		block scripts
 		
 
