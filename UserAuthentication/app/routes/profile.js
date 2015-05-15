@@ -22,9 +22,9 @@ route.get('/profile/:id?',isAuthenticated,function(req,res){
 
 route.get('/api/profile',isAuthenticated,function(req,res){
 	var filter = {};
-	var pagination = _.extend({},defaultPaging,req.params.pagination);
-	if(req.params.name) filter.name = req.params.name;
-	if(req.params.listOfIds) var listOfIds = req.params.listOfIds;
+	var pagination = _.extend({},defaultPaging,req.query.pagination);
+	if(req.query.name) filter.name = req.query.name;
+	if(req.query.listOfIds) var listOfIds = req.query.listOfIds;
 	userController.getAll({},filter,listOfIds,pagination,function(users,error){
 		if(error){
 			res.status(302).send(error);
