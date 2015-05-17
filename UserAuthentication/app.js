@@ -13,12 +13,12 @@ var chatController = require('./app/controllers/chatController');
 var multer = require('multer');
 var fs = require('fs');
 var app = express();
-
+var store = new session.MemoryStore();
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:false}));
 app.use(cookieParser());
-app.use(session({secret:'zaidisawesome'}));
+app.use(session({store:store,secret:'zaidisawesome'}));
 app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
@@ -58,11 +58,30 @@ var io = require('socket.io')(app.listen(37261,function(){
 			console.log('Server started on port 37261');
 		})
 	);
-app.use('/',function(req,res,next){
-	req.io = io;
-	chatController(req);
-	next();
-});
+io.set('authorization',function(handshakeData,accept){
+	var mystore = store;
+	if(handshakeData.headers.cookie){
+		var cookie_parser = cookieParser('zaidisawesome');
+		var parsedCookie = cookie_parser(handshakeData,null,function(){
+			var cookieId = handshakeData.signedCookies['connect.sid'];
+			var currentSession = store.sessions[handshakeData.signedCookies['connect.sid']]
+			if(currentSession){
+				var cookieObject = JSON.parse(currentSession);
+				if(cookieObject && cookieObject.passport){
+					if(cookieObject.passport.user){
+						handshakeData.user = cookieObject.passport.user;
+						accept(null,true);
+					}
+				}else
+					accept({msg:'Some error'},false);
+			}
+		});
+		
+	}
+	accept({msg:'No cookie'},false);	
+})
+chatController(io);
+
 app.use('/',route);
 app.use('/',user);
 app.use('/',profile);

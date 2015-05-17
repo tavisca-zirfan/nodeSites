@@ -50,7 +50,7 @@ html
 					
 		script#profileFriendListTemplate(type="text/template")			
 			{{#each profiles}}
-			.friend-thumbnail
+			.friend-thumbnail(data-id="{{id}}")
 				img.img.img-responsive.img-circle(src="{{attributes.imageUrl}}")
 				span
 					a(href="/profile/{{attributes._id}}")
@@ -71,16 +71,12 @@ html
 						block content
 			.row.footer
 				block footer
+		include shared/chatTemplate.jade
 		include shared/scripts.jade
 		script.
 			friends.bag.user = !{JSON.stringify(user)}
 			friends.bag.profile = new friends.Model.Profile($.extend({},friends.bag.user.profile,{_id:friends.bag.user._id,accountInfo:friends.bag.user.accountInfo,friends:friends.bag.user.friends}));			
-			//- $(function(){
-			//- 	var socket = io();
-			//- 	$('#btnSend').click(function(){
-			//- 		socket.emit('message-recieved',$('#txtMsg').val());
-			//- 	});
-			//- })
+			friends.bag.socket = io();
 		block scripts
 		
 

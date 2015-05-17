@@ -3,7 +3,7 @@
     el:'#profile',
     initialize:function(params) {
         this.profileId = params.profileId;
-        this.model = new friends.Model.Profile({id:this.profileId});
+        this.model = new friends.Model.Profile({_id:this.profileId});
         var canEdit = this.profileId == friends.bag.user._id;
         this.model.set('canEdit',canEdit);
         if (!window.friends.hbTemplate.ProfileView) window.friends.hbTemplate.ProfileView = Handlebars.compile($(this.template).html());

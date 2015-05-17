@@ -8,6 +8,8 @@ window.friends.Views.FriendListView = Backbone.View.extend({
         if (!friends.hbTemplate.FriendListView) friends.hbTemplate.FriendListView = Handlebars.compile($(this.template).html());
         this.$el.html(Handlebars.compile($('#profileFriendSectionTemplate').html())());
         this.collection = new friends.Collection.Profile();
+        if(this.profile.id==friends.bag.user._id)
+            this.chatListView = new friends.Views.ChatListView({socket:friends.bag.socket});
         this.listenTo(this.collection, 'sync', this.render);
         this.collection.fetch({reset:true});
         if(this.profile.id==friends.bag.user._id){
@@ -34,7 +36,17 @@ window.friends.Views.FriendListView = Backbone.View.extend({
                     that._search(true);
                 },500));
             }
-        })
+        });
+        if(this.chatListView){
+            $('.friend-thumbnail',this.$el).on('click',function(){
+                var profile = that.collection.get($(this).data('id'));
+                if(!profile){
+                    profile = new friends.Model.Profile({_id:$(this).data('id')});
+                    profile.fetch();
+                }
+                that.chatListView.createPopup(profile);
+            });
+        }
     },
     _search:function(force) { 
         var value =  $('#friendSearch').val();      

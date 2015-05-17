@@ -160,6 +160,23 @@ div.img-div{
     height:400px;
     overflow-y: scroll;
 }
+
+.chat-container{
+    position: fixed;
+    bottom: -20px;
+    right: 0px;
+}
+.chat-container li{
+    list-style-type: none;
+}
+
+.chat-container ul{
+    padding-left: 0px;
+}
+
+.chat-container img{
+    height: 50px;
+}
     
 @media (min-width: 768px) {
     .omb_login .omb_forgotPwd {

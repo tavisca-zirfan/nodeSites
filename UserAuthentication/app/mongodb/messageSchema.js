@@ -4,7 +4,10 @@ var messageSchema = new mongoose.Schema({
 	text:String,
 	from:{type:mongoose.Schema.ObjectId,ref:'users'},
 	to:{type:mongoose.Schema.ObjectId,ref:'users'},
-	createdAt:Date
+	createdAt:Date,
+	deliveredAt:Date,
+	seenAt:Date,
+	clientid:String
 },{
 	collection:'messages',
 });

@@ -31,7 +31,9 @@ route.post('/login',passport.authenticate('local-signin',{
 	failureRedirect:'/loginfailure'
 }));
 
-
+route.get('/message',function(req,res,next){
+	res.render('message',{user:req.user});
+})
 
 route.get('/loginsuccess',function(req,res,next){
 	res.send(req.user);
