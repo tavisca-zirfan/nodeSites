@@ -1,0 +1,14 @@
+script#profilePicViewTemplate(type="text/template")
+    form#frmPic(action='/profile/upload',enctype='multipart/form-data',method='post')
+      .fileinput.fileinput-new.circle-image(data-provides='fileinput')
+        div(data-trigger='fileinput')
+          .fileinput-new(style='width: 140px; height: 140px;')
+            img(src='{{attributes.imageUrl}}', alt='...')
+          .fileinput-preview.img-shown(style='max-width: 140px; max-height: 140px;')
+        div(style='position:relative')
+          span.btn.btn-link.btn-file
+            input(type='file', name='profilepic',id='profilepic')
+          | 
+          a#picRemove.btn.btn-link.fileinput-exists(href='#') Remove
+          a#picSave.btn.btn-link.fileinput-exists(href='#') Save
+          a#picCancel.btn.btn-link.fileinput-exists(href='#', data-dismiss='fileinput') Cancel

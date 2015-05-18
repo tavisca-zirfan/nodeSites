@@ -11,7 +11,7 @@
         this.model.fetch();
     },
     render: function () {
-        this.originalModel = new friends.Model.Profile(JSON.stringify(this.model));
+        this.originalModel = new friends.Model.Profile(JSON.parse(JSON.stringify(this.model)));
         this.$profileView = $(window.friends.hbTemplate.ProfileView(this.model));
         this.$el.html(this.$profileView);
         this._renderPic();

@@ -16,3 +16,4 @@ window.friends.Collection.EventPerson = Backbone.Collection.extend({
 	url:function(){		
 		return '/api/eventpost/'+this.parent.id+'/person/';
 	}
+});

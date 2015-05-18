@@ -17,7 +17,7 @@
                             status('Error: ' + xhr.status);
                     },
                     success: function(response) {
-                        that.model.imageUrl = response.path;
+                        that.model.attributes.imageUrl = response.path;
                         that.render();
                     }
                 });

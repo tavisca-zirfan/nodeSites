@@ -5,13 +5,15 @@ block content
   script#profileViewTemplate(type="text/template")
     .container.target
       .row
-        .col-sm-10
-          h1 {{attributes.name.firstName}} {{attributes.name.lastName}}
-          button.btn.btn-success(type='button') Add me!
-          |     
-          button.btn.btn-info(type='button') Send me a message
-          br
-        .col-sm-2.profile-pic
+        .col-sm-2.col-sm-offset-1.profile-pic
+        .col-sm-9
+          .pull-right
+            h1 {{attributes.name.firstName}} {{attributes.name.lastName}}
+            button.btn.btn-success(type='button') Add me!
+            |     
+            button.btn.btn-info(type='button') Send me a message
+            br
+        
       br
       .row
         .col-sm-3
@@ -20,27 +22,7 @@ block content
           .relationship
           .account-info
           .friendlist
-          .panel.panel-default
-            .panel-heading
-              | Insured / Bonded?
-            .panel-body
-              div(style="padding-top:15px")
-                img.img.img-responsive.img-circle(src="/uploads/5544e8089d07de701611e10c/profilepicIMG1B51430638047050.JPG",style="display:inline;height:40px")
-                span(style="padding-left:15px")
-                  |  Zaid Bin Irfan
-              div(style="padding-top:15px")
-                img.img.img-responsive.img-circle(src="/uploads/5544e8089d07de701611e10c/profilepicIMG1B51430638047050.JPG",style="display:inline;height:40px")
-                span(style="padding-left:15px")
-                  |  Zaid Bin Irfan
-              div(style="padding-top:15px")
-                img.img.img-responsive.img-circle(src="/uploads/5544e8089d07de701611e10c/profilepicIMG1B51430638047050.JPG",style="display:inline;height:40px")
-                span(style="padding-left:15px")
-                  |  Zaid Bin Irfan
-              div(style="padding-top:15px")
-                img.img.img-responsive.img-circle(src="/uploads/5544e8089d07de701611e10c/profilepicIMG1B51430638047050.JPG",style="display:inline;height:40px")
-                span(style="padding-left:15px")
-                  |  Zaid Bin Irfan
-              
+             
           .panel.panel-default
             .panel-heading
               | Website 
@@ -186,20 +168,7 @@ block content
               <option>Year</option>
               {{#forWhile year 110 -1}}<option value="{{this}}">{{this}}</option>{{/forWhile}}
         
-  script#profilePicViewTemplate(type="text/template")
-    form#frmPic(action='/profile/upload',enctype='multipart/form-data',method='post')
-      .fileinput.fileinput-new.circle-image(data-provides='fileinput')
-        div(data-trigger='fileinput')
-          .fileinput-new(style='width: 140px; height: 140px;')
-            img(src='{{attributes.imageUrl}}', alt='...')
-          .fileinput-preview.img-shown(style='max-width: 140px; max-height: 140px;')
-        div(style='position:relative')
-          span.btn.btn-link.btn-file
-            input(type='file', name='profilepic',id='profilepic')
-          | 
-          a#picRemove.btn.btn-link.fileinput-exists(href='#') Remove
-          a#picSave.btn.btn-link.fileinput-exists(href='#') Save
-          a#picCancel.btn.btn-link.fileinput-exists(href='#', data-dismiss='fileinput') Cancel
+  include shared/profilePicTemplate
 block scripts
   script(type="text/javascript", src="/scripts/Model/profileModel.js")
   script(type="text/javascript", src="/scripts/Views/profileView.js")
