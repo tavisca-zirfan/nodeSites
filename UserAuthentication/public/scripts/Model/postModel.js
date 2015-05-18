@@ -62,7 +62,20 @@ window.friends.Model.EventPost = friends.Model.Post.extend({
             options.url = model.methodUrl[method.toLowerCase()];
         }
         Backbone.sync(method, model, options);
-    }
+    },
+    relations: {
+        comments: window.friends.Collection.Comment,
+        likes:friends.Collection.Likes,
+        dislikes:friends.Collection.Dislikes,
+        peopleComing:friends.Collection.EventPerson
+    },
+    parse:function(model) {
+        if (!model.comments) model.comments = [];
+        if (!model.likes) model.likes = [];
+        if (!model.dislikes) model.dislikes = [];
+        if (!model.peopleComing) model.peopleComing = [];
+        return model;
+    },
 });
 
 

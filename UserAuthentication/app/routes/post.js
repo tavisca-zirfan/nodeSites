@@ -37,6 +37,28 @@ route.get('/api/post',isAuthenticated,function(req,res){
 
 });
 
+route.post('/api/eventpost/:id/person',isAuthenticated,function(req,res,next){
+	eventPostController.update(req.params.id,{addPeopleComing:req.user._id},{},function(model,error){
+		if(error){
+			res.status(302).send(error);
+		}
+		res.status(200).send({_id:req.user._id});
+	});
+});
+
+route.delete('/api/eventpost/:id/person/:pid',isAuthenticated,function(req,res,next){
+	eventPostController.update(req.params.id,{removePeopleComing:req.user._id},{},function(model,error){
+		if(error){
+			res.status(302).send(error);
+		}
+		res.status(200).send({_id:req.user._id});
+	});
+});
+
+route.put('/api/eventpost/:id',isAuthenticated,function(req,res){
+
+})
+
 route.get('/api/post/:id',isAuthenticated,function(req,res){	
 	postController.getById(req.params.id,function(posts,error){
 		if(error){

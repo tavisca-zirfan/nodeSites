@@ -17,7 +17,26 @@ module.exports={
 			}
 		})
 	},
-	update:function(query,updates,options,callback){
-		User.update(query,updates,options,callback);
+	update:function(id,updates,options,callback){
+		var updateFields = {};
+		if(updates.invitedUsers){
+			updateFields['$addToSet'] = {peopleInvited:{$each:updates.invitedUsers}};
+		}
+		if(updates.addPeopleComing){
+			if(!updateFields.$addToSet)
+				updateFields.$addToSet = {};
+			updateFields.$addToSet['peopleComing']=updates.addPeopleComing];
+		}
+		if(updates.removePeopleComing){
+			updateFields.$pull = {peopleComing:updates.removePeopleComing}
+		}
+		EventPost.findByIdAndUpdate(id,updateFields,{safe:true,new:true},function(err,model){
+			if(err){
+				callback(null,err);
+			}
+			else{
+				callback(model,null);
+			}
+		});
 	},
 }
