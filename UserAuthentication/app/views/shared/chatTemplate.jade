@@ -1,0 +1,52 @@
+script#chatViewTemplate(type='text/template')
+  .container.col-md-3.chat-container(id='{{id}}')
+    div
+      div
+        .panel.panel-primary
+          .panel-heading(id='accordion-{{id}}')
+            span.glyphicon.glyphicon-comment
+            |  Chat
+            .btn-group.pull-right
+              a.btn.btn-default.btn-xs(type='button', data-toggle='collapse', data-parent='#accordion-{{id}}', href='#collapseOne-{{id}}')
+                span.glyphicon.glyphicon-chevron-down
+          .panel-collapse.collapse(id='collapseOne-{{id}}')
+            .panel-body(style="min-height:200px")
+              ul.chat
+                 
+            .panel-footer
+              .input-group
+                input#btn-input.form-control.input-sm(type='text', placeholder='Type your message here...')
+                span.input-group-btn
+                  button#btn-chat.btn.btn-warning.btn-sm
+                    | Send
+
+script#chatMessageViewTemplate(type='text/template')
+  {{#xif "this.to.id==friends.bag.user._id"}}
+  li.left.clearfix(clientid="{{clientid}}")    
+    .chat-body.clearfix
+      .header
+        //- strong.primary-font {{from.attributes.name.firstName}}
+        small.pull-right.text-muted
+          span.glyphicon.glyphicon-time
+          | {{x 'moment(this.createdAt).fromNow()'}}
+        span.clearfix(style="visibility:hidden")
+      .clearfix
+        span.chat-img.pull-left
+          img.img-circle(src='{{from.attributes.imageUrl}}', alt='User Avatar')
+        p(style="padding-left:55px;padding-top:0px")
+          | {{text}}
+  {{else}}
+  li.right.clearfix(clientid="{{clientid}}")
+    .chat-body.clearfix
+      .header
+        //- strong.primary-font {{from.attributes.name.firstName}}
+        small.pull-left.text-muted
+          span.glyphicon.glyphicon-time
+          | {{x 'moment(this.createdAt).fromNow()'}}
+        span.clearfix(style="visibility:hidden")
+      .clearfix
+        span.chat-img.pull-right
+          img.img-circle(src='{{from.attributes.imageUrl}}', alt='User Avatar')
+        p(style="padding-right:55px;padding-top:0px")
+          | {{text}}
+  {{/xif}}
