@@ -5,6 +5,10 @@
   }
 }
 
+.container{
+    min-width:90%;
+}
+
 [class^="icon-"],[class*=" icon-"] {
     background-image: url("/Content/images/glyphicons-halflings.png");
 }
@@ -37,6 +41,9 @@
 .home-content {
     border-left: #e6e6e6 1px solid;
     min-height: 600px;
+}
+#frmPic{
+    max-width: 150px;
 }
 /*base card start here*/
 .base-card,.event-card {

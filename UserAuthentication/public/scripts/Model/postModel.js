@@ -53,7 +53,8 @@ window.friends.Model.EventPost = friends.Model.Post.extend({
         this.view = new window.friends.Views.TextPostView({ model: this, $container: $container });
     },
     methodUrl: {
-        'create': '/api/eventpost/'
+        'create': '/api/eventpost/',
+        'update': '/api/eventpost/'
     },
 
     sync: function(method, model, options) {
@@ -77,7 +78,10 @@ window.friends.Model.EventPost = friends.Model.Post.extend({
         return model;
     },
 });
-
+window.friends.Collection.EventPost = Backbone.Collection.extend({
+    model:friends.Model.EventPost,
+    url:'/api/eventpost/'
+});
 
 
 window.friends.Collection.Post = Backbone.Collection.extend({

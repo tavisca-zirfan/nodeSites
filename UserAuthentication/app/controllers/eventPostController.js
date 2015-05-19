@@ -33,7 +33,7 @@ module.exports={
 				callback(null,err);
 			}
 			else{
-				callback({id:user._id},null);
+				callback({_id:user._id},null);
 			}
 		});
 	},

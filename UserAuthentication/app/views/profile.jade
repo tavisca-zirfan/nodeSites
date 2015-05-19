@@ -3,10 +3,11 @@ extends layout.jade
 block content
   #profile
   script#profileViewTemplate(type="text/template")
-    .container.target
+    div
       .row
-        .col-sm-2.col-sm-offset-1.profile-pic
-        .col-sm-9
+        .col-sm-3.col-lg-2
+          .profile-pic.col-lg-offset-2.col-md-offset-1.col-md-offset-1
+        .col-sm-9.col-lg-10
           .pull-right
             h1 {{attributes.name.firstName}} {{attributes.name.lastName}}
             button.btn.btn-success(type='button') Add me!
@@ -16,49 +17,16 @@ block content
         
       br
       .row
-        .col-sm-3
+        .col-sm-3.col-lg-2
           // left col
           .birthday
           .relationship
           .account-info
           .friendlist
              
-          .panel.panel-default
-            .panel-heading
-              | Website 
-              i.fa.fa-link.fa-1x
-            .panel-body
-              a(href='http://bootply.com') bootply.com
-          ul.list-group
-            li.list-group-item.text-muted
-              | Activity 
-              i.fa.fa-dashboard.fa-1x
-            li.list-group-item.text-right
-              span.pull-left
-                strong Shares
-              |  125
-            li.list-group-item.text-right
-              span.pull-left
-                strong Likes
-              |  13
-            li.list-group-item.text-right
-              span.pull-left
-                strong Posts
-              |  37
-            li.list-group-item.text-right
-              span.pull-left
-                strong Followers
-              |  78
-          .panel.panel-default
-            .panel-heading Social Media
-            .panel-body
-              i.fa.fa-facebook.fa-2x
-              i.fa.fa-github.fa-2x
-              i.fa.fa-twitter.fa-2x
-              i.fa.fa-pinterest.fa-2x
-              i.fa.fa-google-plus.fa-2x
+          
         // /col-3
-        .col-sm-9(style='', contenteditable='false')          
+        .col-sm-9.col-lg-10(style='', contenteditable='false')          
           .about
           .perfect-date
           .perfect-friend

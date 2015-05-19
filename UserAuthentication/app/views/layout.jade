@@ -62,25 +62,31 @@ html
 				.alert
 					button.close(type='button', data-dismiss='alert') ×
 					strong Warning! Please enable JavaScript in your browser!
-			.row
-				if !sidebarNotRequired
-					.col-sm-2.col-sm-offset-1.pad25-left.left-sidebar
-						.my-profile-pic
-					#content.col-sm-9
-						block content
-				else
-					#content.col-sm-12
-						block content
-			.row.footer
-				block footer
+			.container.target
+				.row
+					if !sidebarNotRequired
+						.col-sm-3.col-md-3.col-lg-2.left-sidebar
+							.my-profile-pic.col-lg-offset-2.col-md-offset-1
+							.friendlist
+						#content.col-sm-6.col-lg-8
+							block content
+						.col-sm-3.right-sidebar.col-lg-2
+					else
+						#content.col-sm-12
+							block content
+				.row.footer
+					block footer
 		include shared/chatTemplate.jade
 		include shared/scripts.jade
 		script.
 			friends.bag.user = !{JSON.stringify(user)}
 			friends.bag.profile = new friends.Model.Profile($.extend({},friends.bag.user.profile,{_id:friends.bag.user._id,accountInfo:friends.bag.user.accountInfo,friends:friends.bag.user.friends}));
-			if($('.my-profile-pic').length>0)
-				var profilePic = new friends.Views.ProfilePic({model:friends.bag.profile,$container: $('.my-profile-pic')});
 			friends.bag.socket = io();
+			if($('.left-sidebar').length>0){
+				var profilePic = new friends.Views.ProfilePic({model:friends.bag.profile,$container: $('.my-profile-pic')});			
+				var friendlistView = new friends.Views.FriendListView();
+			}
+			
 		block scripts
 		
 
