@@ -37,6 +37,23 @@ route.get('/api/post',isAuthenticated,function(req,res){
 
 });
 
+route.get('/api/eventpost',isAuthenticated,function(req,res){
+	var filter = {};
+	if(req.query.when){
+		filter.when = new Date(req.query.when);
+	}
+	if(req.query.byUser){
+		filter.userId = req.query.byUser;
+	}	
+	eventPostController.get(filter,function(posts,error){
+		if(error){
+			res.status(302).send(error);
+		}
+		res.status(200).send(posts);
+	});
+
+});
+
 route.post('/api/eventpost/:id/person',isAuthenticated,function(req,res,next){
 	eventPostController.addPeople(req.user,req.params.id,function(model,error){
 		if(error){

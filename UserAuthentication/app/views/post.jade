@@ -3,6 +3,9 @@ extends layout.jade
 block content
   .post-list
   include shared/postTemplate.jade
+  include shared/eventTemplate.jade
+block rightSideBar
+  .event-list-notification
 
 block scripts
   script(type="text/javascript", src="/scripts/Views/likeView.js")
@@ -17,6 +20,9 @@ block scripts
   script(type="text/javascript", src="/scripts/Model/postModel.js")
   script(type="text/javascript", src="/scripts/Model/profileModel.js")
   script(type="text/javascript", src="/scripts/Views/postListView.js")
+  script(type="text/javascript", src="/scripts/Views/eventListView.js")
+  script(type="text/javascript", src="/scripts/Views/eventView.js")
   script.
     var postListView = new friends.Views.PostListView();
+    var eventListView = new friends.Views.EventListView({collection:new friends.Collection.EventPost()});
   

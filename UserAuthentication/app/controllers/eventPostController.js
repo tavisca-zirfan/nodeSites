@@ -1,6 +1,26 @@
 var EventPost = require('../models/EventPost');
 
+
 module.exports={
+	get:function(filter,callback){
+		var query = {};
+		if(filter.userId){
+			query['$or'] = [{from:filter.userId},{peopleInvited:filter.userId}];
+		}
+		var postQry = EventPost.find(query).populate([{path:'comments.from',model:'users',select:'profile.name profile.imageUrl'},{path:'from',model:'users',select:'profile.name profile.imageUrl'},{path:'to',model:'users',select:'profile.name profile.imageUrl'}]);
+			//postQry.select({comments:{$slice:1}})
+			if(filter.when){
+				postQry.where('when').gte(filter.when)
+			}
+			postQry.exec(function(err,resPost){
+			if(err){
+				callback(null,err)
+			}
+			else{
+				callback(resPost,null);
+			}
+		});		
+	},
 	create:function(user,eventPost,callback){
 		var post = new EventPost(eventPost);
 		post.from = user._id;

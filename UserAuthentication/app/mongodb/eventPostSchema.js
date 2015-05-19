@@ -10,7 +10,8 @@ var eventPostSchema = postSchema.extend({
 		place:String,
 		latitude:String,
 		longitude:String
-	}
+	},
+	name:String
 });
 
 module.exports = eventPostSchema;

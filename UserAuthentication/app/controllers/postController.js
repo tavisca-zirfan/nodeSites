@@ -9,10 +9,11 @@ module.exports={
 				callback(res,null);
 		});
 	},
+	
 	get:function(filter,callback){		
 		var query = {};
 		if(filter.userId){
-			query['$or'] = [{from:filter.userId},{to:filter.userId}];
+			query['$or'] = [{from:filter.userId},{to:filter.userId},{peopleInvited:filter.userId}];
 		}
 		var postQry = Post.find(query).populate([{path:'comments.from',model:'users',select:'profile.name profile.imageUrl'},{path:'from',model:'users',select:'profile.name profile.imageUrl'},{path:'to',model:'users',select:'profile.name profile.imageUrl'}]);
 			//postQry.select({comments:{$slice:1}})
