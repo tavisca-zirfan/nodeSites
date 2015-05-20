@@ -1,0 +1,70 @@
+<script id="geographyViewTemplate" type="text/template">
+    <div class="clearfix google-map-view" id="divMapOverlay">
+        <form>
+            {{#isEditable}}
+            <input type="hidden" name="txtHdnGeography" type="text" class="hidden" id="txtHdnGeography">
+            <div class="col-md-12 col-lg-12 col-sm-12 pad0-left pad0-right">
+                <div class="form-group">
+                    <div class="input-icon right">
+                        <i class="fa fa-search"></i>
+                        <input type="text" class="form-control" placeholder="Search on map" name="txtMapSearch" id="txtMapSearch" />
+                    </div>
+                </div>
+            </div>
+            {{/isEditable}}
+            <div class="form-group margin0-bottom">
+                <div class="map_canvas pull-left margin0" id="divMap" style="width: 100%; height: 350px; border: 1px solid #d3d3d3;"></div>
+            </div>
+        </form>
+    </div>
+</script>
+
+<script type="text/x-handlebars-template" id="tmplGeoregionInfoWindow">
+    <style type="text/css">
+        #georegion_container input[type=text] { font-family: "Open Sans",sans-serif; height: 24px; line-height: 1.42857143; width: 300px; padding: 3px; font-size: 14px; font-weight: normal; color: #333; background-color: #fff; border: 1px solid #e5e5e5; border-radius: 0; -webkit-box-shadow: none; box-shadow: none; }
+            #georegion_container input[type=text]:focus { border-color: #999 !important; outline: 0; -webkit-box-shadow: none; box-shadow: none; }
+        #georegion_container label { color: #333; font-family: "Open Sans",sans-serif; font-weight: 400; font-size: 14px; display: block; margin-bottom: 5px; }
+            #georegion_container label .required { color: #e02222; font-size: 12px; padding-left: 2px; }
+        #georegion_container #btnOk { font-family: "Open Sans",sans-serif; background-color: #1caf9a; color: #ffffff; border-width: 0; padding: 7px 14px; font-size: 14px; outline: none!important; background-image: none!important; filter: none; -webkit-box-shadow: none; -moz-box-shadow: none; box-shadow: none; text-shadow: none; cursor: pointer; }
+        #georegion_container #btnDelete { margin-left: 10px; font-family: "Open Sans",sans-serif; border-width: 0; padding: 7px 14px; font-size: 14px; outline: none!important; background-image: none!important; filter: none; -webkit-box-shadow: none; -moz-box-shadow: none; box-shadow: none; text-shadow: none; cursor: pointer; color: #333; background-color: #e5e5e5; }
+        #georegion_container #btnOk:hover, #georegion_container #btnOk:focus, #georegion_container #btnOk:active { background-color: #1a9483; border-color: #1caf9a; }
+        #georegion_container #btnDelete:hover, #georegion_container #btnDelete:focus, #georegion_container #btnDelete:active { background-color: #d1d1d1; border-color: #1caf9a; }
+    </style>
+    <div style="height: 100%">
+        <div id="georegion_container" style="height: 100%">
+            <div>
+                <div style="padding: 3px 0px">
+                    <label>Name Of Region <span class="required">*</span></label>
+                    <input id="infoWindowTitle" type="text">
+                </div>
+            </div>
+            <div style="position: relative; bottom: 0px; padding-top: 10px;">
+                <input id="btnOk" onclick="GeoReg.closeInfoWindow()" type="button" value="OK">
+                <input id="btnDelete" onclick="GeoReg.deleteSelectedShape()" type="button" value="Delete">
+                <label id="lblError" style="display: inline; color: rgb(255, 84, 84); margin-left: 5px;"></label>
+            </div>
+        </div>
+    </div>
+</script>
+
+<script type="text/javascript">
+    function initialize() {
+        var script = document.createElement('script');
+        script.type = 'text/javascript';
+        script.src = '/Resources/plugins/gmap3.min.js';
+        document.body.appendChild(script);
+        google.maps.Polygon.prototype.my_getBounds = function () {
+            var bounds = new google.maps.LatLngBounds()
+            this.getPath().forEach(function (element, index) { bounds.extend(element) })
+            return bounds
+        }
+    }
+    function loadScript() {
+        var script = document.createElement('script');
+        script.type = 'text/javascript';
+        script.src = '//maps.googleapis.com/maps/api/js?v=3.exp&libraries=drawing&sensor=false&' + 'callback=initialize';
+        script.async = true;
+        document.body.appendChild(script);
+    }
+    window.onload = loadScript;
+</script>
