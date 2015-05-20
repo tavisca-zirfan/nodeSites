@@ -7,7 +7,7 @@ Gmap3 API
 - Handlebars Template
 **/
 
-window.hfl.Views.GeoLocationView = Backbone.View.extend({
+window.friends.Views.GeoLocationView = Backbone.View.extend({
 
     template: '#geographyViewTemplate',
 

@@ -185,6 +185,15 @@ div.img-div{
 .chat-container img{
     height: 50px;
 }
+
+#georegion_container input[type=text] { font-family: "Open Sans",sans-serif; height: 24px; line-height: 1.42857143; width: 300px; padding: 3px; font-size: 14px; font-weight: normal; color: #333; background-color: #fff; border: 1px solid #e5e5e5; border-radius: 0; -webkit-box-shadow: none; box-shadow: none; }
+#georegion_container input[type=text]:focus { border-color: #999 !important; outline: 0; -webkit-box-shadow: none; box-shadow: none; }
+#georegion_container label { color: #333; font-family: "Open Sans",sans-serif; font-weight: 400; font-size: 14px; display: block; margin-bottom: 5px; }
+#georegion_container label .required { color: #e02222; font-size: 12px; padding-left: 2px; }
+#georegion_container #btnOk { font-family: "Open Sans",sans-serif; background-color: #1caf9a; color: #ffffff; border-width: 0; padding: 7px 14px; font-size: 14px; outline: none!important; background-image: none!important; filter: none; -webkit-box-shadow: none; -moz-box-shadow: none; box-shadow: none; text-shadow: none; cursor: pointer; }
+#georegion_container #btnDelete { margin-left: 10px; font-family: "Open Sans",sans-serif; border-width: 0; padding: 7px 14px; font-size: 14px; outline: none!important; background-image: none!important; filter: none; -webkit-box-shadow: none; -moz-box-shadow: none; box-shadow: none; text-shadow: none; cursor: pointer; color: #333; background-color: #e5e5e5; }
+#georegion_container #btnOk:hover, #georegion_container #btnOk:focus, #georegion_container #btnOk:active { background-color: #1a9483; border-color: #1caf9a; }
+#georegion_container #btnDelete:hover, #georegion_container #btnDelete:focus, #georegion_container #btnDelete:active { background-color: #d1d1d1; border-color: #1caf9a; }
     
 @media (min-width: 768px) {
     .omb_login .omb_forgotPwd {

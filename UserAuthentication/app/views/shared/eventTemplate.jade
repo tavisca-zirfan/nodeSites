@@ -36,18 +36,22 @@ script#eventEditViewTemplate(type="text/template")
                 input.form-control#eventName(type='text', placeholder='Event Name')
             .col-md-6
               .form-group
-                input.form-control#eventLocation(type='text', placeholder='Event Location')
-          .row
-            .col-md-6
-              .form-group
-                input#eventDate.form-control(type='text', placeholder='Event Date')
+                input#eventDate.form-control(type='text', placeholder='Event Date')          
           .row
             .col-md-12
               .form-group
                 textarea.form-control#eventDescription(placeholder='Description')
+          .row
+            .col-md-12
+              .form-group
+                input.form-control#eventLocation(type='text', placeholder='Event Location')
+                input.form-control#geolocation(type='hidden', placeholder='Event Location')
+            .col-md-12
+              .geo-map
         .modal-footer
           button.btn.btn-default(type='button', data-dismiss='modal') Close
           button.btn.btn-primary#btnEventSave(type='button') Save changes
+include geoLocationTemplate.jade
 
 
 

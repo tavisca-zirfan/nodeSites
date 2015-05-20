@@ -16,6 +16,7 @@ window.friends.Views.EventView = Backbone.View.extend({
 		this.$modal = $(friends.hbTemplate.EventEditView(this.model));
 		this.bindEditEvents();
 		this.$modal.modal('show');
+		this._renderMap();
 	},
 	bindReadEvents:function(){
 		var that = this;
@@ -39,5 +40,25 @@ window.friends.Views.EventView = Backbone.View.extend({
 		});
 
 		
+	},
+	_renderMap:function(){
+		var that = this;
+		that.geoLocationView = new friends.Views.GeoLocationView({ 
+				model: {
+                    address: $('#eventLocation', that.$modal).val(),
+                    geolocation: $('#geolocation', that.$modal).val()
+                },               
+                options: {
+                    isEditable:true,
+					$container:$('.geo-map',that.$modal),
+					txtbox:$('#eventLocation',that.$modal),
+					geolocation:$('#geolocation',that.$modal),
+					onchange:function(pointstr,point){
+						console.log(pointstr);
+						console.log(point);
+					}
+                }
+            });
+            that.geoLocationView.render();
 	}
 });
