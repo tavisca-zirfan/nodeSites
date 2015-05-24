@@ -201,3 +201,7 @@ div.img-div{
         margin-top:10px;
     }       
 }
+
+.ui-autocomplete {
+    z-index: 5000;
+}

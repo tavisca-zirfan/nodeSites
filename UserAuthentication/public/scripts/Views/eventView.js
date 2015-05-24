@@ -22,8 +22,16 @@ window.friends.Views.EventView = Backbone.View.extend({
 		var that = this;
 	},
 	bindEditEvents:function(){
+		var data = [{ id: 0, text: 'enhancement' }, { id: 1, text: 'bug' }, { id: 2, text: 'duplicate' }, { id: 3, text: 'invalid' }, { id: 4, text: 'wontfix' }];
+ 
 		var that = this;
 		$("#eventDate",this.$modal).datepicker();
+		$('#peopleInvited',this.$modal).select2({tags:true,
+			// query:function(req){
+			// 	console.log(req);
+			// },
+			data:[{id:1,text:'zaid'},{id:2,text:'avani'}]
+			});
 		$("#btnEventSave",this.$modal).on('click',function(){
 			that.model = that.model||new friends.Model.EventPost();
 			that.model.set('name',$('#eventName',that.$modal).val());
@@ -38,21 +46,20 @@ window.friends.Views.EventView = Backbone.View.extend({
 				}});
 			}
 		});
-
 		
 	},
 	_renderMap:function(){
 		var that = this;
+		var isEditable = this.model.isNew();
 		that.geoLocationView = new friends.Views.GeoLocationView({ 
 				model: {
                     address: $('#eventLocation', that.$modal).val(),
                     geolocation: $('#geolocation', that.$modal).val()
                 },               
                 options: {
-                    isEditable:true,
+                    isEditable:false,
 					$container:$('.geo-map',that.$modal),
-					txtbox:$('#eventLocation',that.$modal),
-					geolocation:$('#geolocation',that.$modal),
+					txtbox:$('#geolocation',that.$modal),
 					onchange:function(pointstr,point){
 						console.log(pointstr);
 						console.log(point);

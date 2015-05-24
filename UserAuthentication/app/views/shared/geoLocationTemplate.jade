@@ -32,7 +32,7 @@ script.
     var script = document.createElement('script');
     script.type = 'text/javascript';
     script.src = '/scripts/Library/gmap3.min.js';
-    document.body.appendChild(script);
+    //document.body.appendChild(script);
     google.maps.Polygon.prototype.my_getBounds = function () {
       var bounds = new google.maps.LatLngBounds()
       this.getPath().forEach(function (element, index) { bounds.extend(element) })
@@ -44,7 +44,7 @@ script.
     script.type = 'text/javascript';
     script.src = '//maps.googleapis.com/maps/api/js?v=3.exp&libraries=drawing&sensor=false&' + 'callback=initialize';
     script.async = true;
-    document.body.appendChild(script);
+    //document.body.appendChild(script);
   }
   window.onload = loadScript;
 </script>

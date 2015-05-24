@@ -69,7 +69,7 @@ window.friends.Views.GeoLocationView = Backbone.View.extend({
         that.$txtGeolocation = $(this.options.geolocation);
 
         that.$divMap = $('#divMap', that.$mapEl);
-        that.$divMap.height($(window).height() - 260);
+        that.$divMap.height($(window).height() - 460);
         that.$txtMapSearch = $('#txtMapSearch', that.$mapEl);
 
         setTimeout(function () {
@@ -348,6 +348,7 @@ window.friends.Views.GeoLocationView = Backbone.View.extend({
                     that.$txtMapSearch.siblings('.prettyInput').show();
                 }
             });
+            this.$txtMapSearch.autocomplete( "option", "appendTo", "#divMapOverlay")
         }
 
     },

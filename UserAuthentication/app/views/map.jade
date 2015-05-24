@@ -1,0 +1,22 @@
+extends layout.jade
+
+block content
+  .row
+    .col-md-12
+      .form-group
+        input.form-control#eventLocation(type='text', placeholder='Event Location')
+        input.form-control#geolocation(type='hidden', placeholder='Event Location')
+  .map-canvas(style="min-width:700px;min-height:600px")
+  include shared/geoLocationTemplate.jade
+block rightSideBar
+  .event-list-notification
+block scripts  
+  script(type="text/javascript", src="//maps.googleapis.com/maps/api/js?v=3.exp&libraries=drawing&sensor=false&' + 'callback=initialize")
+  script(type="text/javascript", src="/scripts/Library/gmap3.min.js")
+  script(type="text/javascript", src="/scripts/Views/geoLocationView.js")
+  script.
+    var geoLocationView = new friends.Views.GeoLocationView({ 
+      model: {address: $('#eventLocation').val(),geolocation: $('#geolocation').val()},               
+      options: {isEditable:true,$container:$('.map-canvas'),txtbox:$('#eventLocation'),geolocation:$('#geolocation'),onchange:function(pointstr,point){console.log(pointstr);console.log(point);}}
+    });
+    geoLocationView.render();

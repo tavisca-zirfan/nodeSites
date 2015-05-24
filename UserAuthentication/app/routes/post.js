@@ -10,6 +10,10 @@ route.get('/post/',isAuthenticated,function(req,res){
 	res.render('post',{user:req.user,sidebarNotRequired:false});
 });
 
+route.get('/map',isAuthenticated,function(req,res,next){
+	res.render('map',{user:req.user,sidebarNotRequired:true});
+})
+
 route.post('/api/textpost',isAuthenticated,function(req,res){
 	textPostController.create(req.user,req.body,(function(post,error){
 		console.log("creating text post");
