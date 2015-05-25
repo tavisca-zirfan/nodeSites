@@ -45,6 +45,12 @@ window.friends.Collection.TextPost = Backbone.Collection.extend({
 });
 
 window.friends.Model.EventPost = friends.Model.Post.extend({
+    initialize:function(){
+        this.methodUrl= {
+            'create': '/api/eventpost/',
+            'update': '/api/eventpost/'+this.id
+        }
+    },
     idAttribute:'_id',
     defaults: {
         //postType: 'PostText'
@@ -52,10 +58,7 @@ window.friends.Model.EventPost = friends.Model.Post.extend({
     renderView: function ($container) {
         this.view = new window.friends.Views.TextPostView({ model: this, $container: $container });
     },
-    methodUrl: {
-        'create': '/api/eventpost/',
-        'update': '/api/eventpost/'
-    },
+    
 
     sync: function(method, model, options) {
         if (model.methodUrl && model.methodUrl[method.toLowerCase()]) {

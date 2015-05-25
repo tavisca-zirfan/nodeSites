@@ -27,7 +27,7 @@ route.get('/auth/facebook/callback',passport.authenticate('facebook',{
 }))
 
 route.post('/login',passport.authenticate('local-signin',{
-	successRedirect:'/profile',
+	successRedirect:'/post',
 	failureRedirect:'/loginfailure'
 }));
 

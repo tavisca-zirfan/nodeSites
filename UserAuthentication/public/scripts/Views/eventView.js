@@ -4,8 +4,8 @@ window.friends.Views.EventView = Backbone.View.extend({
 	initialize:function(options){
 		if(!friends.hbTemplate.EventReadView) friends.hbTemplate.EventReadView = Handlebars.compile($(this.readTemplate).html());
 		if(!friends.hbTemplate.EventEditView) friends.hbTemplate.EventEditView = Handlebars.compile($(this.editTemplate).html());
-		this.model = this.model||new friends.Model.EventPost();
-
+		this.model = this.model||new friends.Model.EventPost();		
+		window.friends.bag.profileList = window.friends.bag.profileList||new friends.Collection.Profile();
 	},
 	renderRead:function(){
 		this.$el = $(friends.hbTemplate.EventReadView(this.model));
@@ -20,28 +20,90 @@ window.friends.Views.EventView = Backbone.View.extend({
 	},
 	bindReadEvents:function(){
 		var that = this;
+		$('a',this.$el).on('click',function(){
+			that.renderEdit();
+		});
 	},
 	bindEditEvents:function(){
-		var data = [{ id: 0, text: 'enhancement' }, { id: 1, text: 'bug' }, { id: 2, text: 'duplicate' }, { id: 3, text: 'invalid' }, { id: 4, text: 'wontfix' }];
- 
 		var that = this;
+		var lazySearch = _.debounce(function(query){
+			if(that.model.isNew() || friends.bag.profile.id==that.model.attributes.from._id){
+				var data= {name:query.term};
+				//window.friends.bag.profileList = window.friends.bag.profileList||new friends.Collection.Profile();
+				window.friends.bag.profileList.fetch({data:data,success:function(){
+					var results = [];
+					friends.bag.profileList.each(function(profile){
+						results.push({id:profile.id,
+							text:profile.attributes.name.firstName+' '+profile.attributes.name.lastName,
+							img:profile.attributes.imageUrl});
+					});
+					query.callback({results:results});
+				}});
+			}
+			else
+				query.callback({results:[]});
+		},1000) 
+		
+		if(!that.model.isNew()){
+			$("#eventDate",this.$modal).val(that.model.get('when')).attr('disabled','disabled');
+			$("#eventDescription",this.$modal).val(that.model.get('text')).attr('disabled','disabled');
+			$("#eventName",this.$modal).val(that.model.get('name')).attr('disabled','disabled');
+
+		}
 		$("#eventDate",this.$modal).datepicker();
-		$('#peopleInvited',this.$modal).select2({tags:true,
-			// query:function(req){
-			// 	console.log(req);
-			// },
-			data:[{id:1,text:'zaid'},{id:2,text:'avani'}]
-			});
+		$('#peopleInvited',this.$modal).val('5543e7d9db967f1811fd1e4b,554dd2e43333923c09b07068');
+		$('#peopleInvited',this.$modal).select2({
+			query:lazySearch,
+			formatResult:function(item){
+				return "<img style='height:50px;margin-right:10px;' class='img img-circle' src='"+item.img+"'/><span>"+item.text+"</span>"
+			},
+			//disabled:!(that.model.isNew() || friends.bag.profile.id==that.model.attributes.from._id),
+			disabled:true,
+			tags: true,
+			initSelection:function(element,callback){
+				var availableIds = [];
+				var idsToBeFetched = [];
+				var ids = (that.model.attributes.peopleInvited);
+				_.each(ids,function(id){
+					if(friends.bag.profileList.get(id)){
+						var model = friends.bag.profileList.get(id)
+						availableIds.push({id:id,text:model.attributes.name.firstName+' '+model.attributes.name.lastName});
+					}
+					else
+						idsToBeFetched.push(id);					
+				});
+				if(idsToBeFetched.length>0){
+					friends.bag.profileList.fetch({listOfIds:idsToBeFetched,success:function(){
+						_.each(ids,function(id){
+							var model = friends.bag.profileList.get(id)
+							availableIds.push({id:id,text:model.attributes.name.firstName+' '+model.attributes.name.lastName});
+						});
+						results = availableIds;
+						//results = [{id:'5543e7d9db967f1811fd1e4b',text:'Zaid'},{id:'554dd2e43333923c09b07068',text:'Aditya'}];
+						callback(results);
+					}});
+				}
+				results = availableIds;
+				//results = [{id:'5543e7d9db967f1811fd1e4b',text:'Zaid'},{id:'554dd2e43333923c09b07068',text:'Aditya'}];
+				callback(results);
+			}
+		});
 		$("#btnEventSave",this.$modal).on('click',function(){
 			that.model = that.model||new friends.Model.EventPost();
 			that.model.set('name',$('#eventName',that.$modal).val());
 			that.model.set('text',$('#eventDescription',that.$modal).val());
-			that.model.set('where',{place:$('#eventLocation',that.$modal).val()});
+			var geopoint = $('#geolocation',that.$modal).val().split(',');
+			that.model.set('where',{place:$('#txtMapSearch',that.$modal).val(),latitude:geopoint[0],longitude:geopoint[1]});
 			that.model.set('when',new Date($('#eventDate',that.$modal).val()));
+			that.model.set('peopleInvited',_.pluck($('#peopleInvited',that.$modal).select2('data'),'id'));
 			var isNew = that.model.isNew();
 			if(isNew){
 				that.model.save(null,{success:function(m){
 					that.trigger('created',that.model);
+					that.$modal.modal('hide');
+				}});
+			}else{
+				that.model.save(null,{success:function(m){
 					that.$modal.modal('hide');
 				}});
 			}
@@ -52,12 +114,12 @@ window.friends.Views.EventView = Backbone.View.extend({
 		var that = this;
 		var isEditable = this.model.isNew();
 		that.geoLocationView = new friends.Views.GeoLocationView({ 
-				model: {
-                    address: $('#eventLocation', that.$modal).val(),
-                    geolocation: $('#geolocation', that.$modal).val()
+				model: that.model.attributes.where==null?{adress:'',geolocation:''}:{
+                    address: that.model.attributes.where.place,
+                    geolocation: that.model.attributes.where.latitude+','+that.model.attributes.where.longitude
                 },               
                 options: {
-                    isEditable:false,
+                    isEditable:isEditable,
 					$container:$('.geo-map',that.$modal),
 					txtbox:$('#geolocation',that.$modal),
 					onchange:function(pointstr,point){
