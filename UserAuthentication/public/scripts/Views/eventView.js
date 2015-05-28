@@ -4,6 +4,7 @@ window.friends.Views.EventView = Backbone.View.extend({
 	initialize:function(options){
 		if(!friends.hbTemplate.EventReadView) friends.hbTemplate.EventReadView = Handlebars.compile($(this.readTemplate).html());
 		if(!friends.hbTemplate.EventEditView) friends.hbTemplate.EventEditView = Handlebars.compile($(this.editTemplate).html());
+		if(!friends.hbTemplate.EventOtherEditView) friends.hbTemplate.EventOtherEditView = Handlebars.compile($('#eventReadViewTemplate').html());
 		this.model = this.model||new friends.Model.EventPost();		
 		window.friends.bag.profileList = window.friends.bag.profileList||new friends.Collection.Profile();
 	},
@@ -18,10 +19,53 @@ window.friends.Views.EventView = Backbone.View.extend({
 		this.$modal.modal('show');
 		this._renderMap();
 	},
+	_fillModel:function(callback){
+		var that = this;
+		var ids = (that.model.attributes.peopleInvited);
+		var  idsToBeFetched = [];
+		var peopleInvited =[];
+		var peopleComing=[];
+		_.each(ids,function(id){
+			if(friends.bag.profileList.get(id)){
+				
+			}
+			else
+				idsToBeFetched.push(id);					
+		});
+		if(idsToBeFetched.length>0){
+			friends.bag.profileList.fetch({listOfIds:idsToBeFetched,success:function(){
+				_.each(that.model.attributes.peopleInvited,function(id){
+					var model = friends.bag.profileList.get(id)
+					peopleInvited.push(model);
+				});
+				_.each(that.model.attributes.peopleComing,function(id){
+					var model = friends.bag.profileList.get(id)
+					peopleComing.push(model);
+				});
+				that.model.attributes.peopleInvitedF = peopleInvited;
+				that.model.attributes.peopleComingF = peopleComing;
+				callback();
+			}});
+		}else
+			callback();
+	},
+	renderOtherEdit:function(){
+		var that = this;
+		this._fillModel(function(){
+			that.$modal = $(friends.hbTemplate.EventOtherEditView(that.model));
+			//this.bindEditEvents();
+			that.$modal.modal('show');
+			that._renderMap();
+		});
+		
+	},
 	bindReadEvents:function(){
 		var that = this;
 		$('a',this.$el).on('click',function(){
 			that.renderEdit();
+		});
+		$('.glyphicon-edit',this.$el).on('click',function(){
+			that.renderOtherEdit();
 		});
 	},
 	bindEditEvents:function(){
@@ -45,7 +89,7 @@ window.friends.Views.EventView = Backbone.View.extend({
 		},1000) 
 		
 		if(!that.model.isNew()){
-			$("#eventDate",this.$modal).val(that.model.get('when')).attr('disabled','disabled');
+			$("#eventDate",this.$modal).val(moment(that.model.get('when')).format('Do MMM YYYY')).attr('disabled','disabled');
 			$("#eventDescription",this.$modal).val(that.model.get('text')).attr('disabled','disabled');
 			$("#eventName",this.$modal).val(that.model.get('name')).attr('disabled','disabled');
 
