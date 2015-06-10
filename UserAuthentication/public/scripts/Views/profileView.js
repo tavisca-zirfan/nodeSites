@@ -57,7 +57,7 @@
             el:'.relationship',canEdit:this.model.get('canEdit'),propertyName:'relationship'});
     },
     _renderActivities:function() {
-        
+        //
     },
     bindEvents:function() {
         var that = this;

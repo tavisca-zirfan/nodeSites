@@ -77,20 +77,24 @@ route.put('/api/profile/:id',function(req,res,next){
 });
 
 route.post('/api/profile/:id/friend',function(req,res,next){
-	userController.addFriend(req.user,req.params.id,function(err,res){		
+	userController.addFriend(req.user,req.params.id,function(err,model){		
 		if(err){
 			res.status(302).send(err);
+		}else{
+			res.status(200).send(model);
 		}
-		res.status(200).send(res);
+		
 	});
 });
 
 route.delete('/api/profile/:id/friend/:fid',function(req,res,next){
-	userController.removeFriend(req.user,req.params.id,function(err,res){		
+	userController.removeFriend(req.user,req.params.id,function(err,model){		
 		if(err){
 			res.status(302).send(err);
+		}else{
+			res.status(200).send(model);
 		}
-		res.status(200).send(res);
+		
 	});
 });
 

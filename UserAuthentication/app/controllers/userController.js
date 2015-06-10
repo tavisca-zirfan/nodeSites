@@ -140,19 +140,30 @@ module.exports = {
 				}
 				// if the user is already added in the other person's friendlist then just update user's friendlist
 				if(friend.friends.indexOf(authUser._id)>=0){
-					if(user.friends.indexOf(friend._id)<0){
-						user.friends.push(friend._id);
+					friend.friendRequestSent.pull(user._id);
+					friend.friendRequestRecieved.pull(user._id);
+					friend.save(function(error,f){
+						if(error){
+							callback(null,error)
+						}	
+						user.friendRequestSent.pull(friend._id);
+						user.friendRequestRecieved.pull(friend._id);
+						if(user.friends.indexOf(friend._id)<0){							
+							user.friends.push(friend._id);							
+						}					
 						saveFriendship(user);
-					}
+					});						
+					
 				}
 				// if friend request already sent
-				if(user.friendRequestSent.indexOf(id)>=0 && friend.friendRequestRecieved.indexOf(user._id)>=0)
+				else if(user.friendRequestSent.indexOf(id)>=0 && friend.friendRequestRecieved.indexOf(user._id)>=0)
 				{
 					callback(null,{errorType:'Duplicate',message:'Friend Request already sent'});
 				}
 				// if friend request was sent but not recieved
 				else if(user.friendRequestSent.indexOf(id)>=0)
 				{
+					friend.friendRequestSent.pull(user._id);
 					friend.friendRequestRecieved.push(user._id);
 					saveFriendship(friend);
 				}
@@ -163,26 +174,30 @@ module.exports = {
 					saveFriendship(user);
 				}
 				// if the request is recieved from that person
-				if(user.friendRequestRecieved.indexOf(id)>=0){
-					friend.friendRequestSent = _.without(friend.friendRequestSent,authUser._id);
+				else if(user.friendRequestRecieved.indexOf(id)>=0){
+					friend.friendRequestRecieved.pull(user._id);
+					friend.friendRequestSent.pull(user._id);
 					friend.friends.push(user._id);
 					friend.save(function(error,f){
 						if(error){
 							callback(null,error);
 						}
-						user.friendRequestRecieved = _.without(user.friendRequestRecieved,friend._id);
+						user.friendRequestSent.pull(friend._id);
+						user.friendRequestRecieved.pull(friend._id);
 						user.friends.push(friend._id);
 						saveFriendship(user);
 					});
 				}
 				// if there has been no request from either side
-				if(friend.friendRequestRecieved.indexOf(user._id)<0){
+				else if(friend.friendRequestRecieved.indexOf(user._id)<0){
 					friend.friendRequestRecieved.push(user._id);
+					friend.friendRequestSent.pull(user._id);
 					friend.save(function(error,f){
 						if(error){
 							callback(null,error);
 						}
 						user.friendRequestSent.push(friend._id);
+						user.friendRequestRecieved.pull(friend._id);
 						saveFriendship(user);
 					});
 				}				
