@@ -81,7 +81,11 @@ html
 		include shared/scripts.jade
 		script.
 			friends.bag.user = !{JSON.stringify(user)}
-			friends.bag.profile = new friends.Model.Profile($.extend({},friends.bag.user.profile,{_id:friends.bag.user._id,accountInfo:friends.bag.user.accountInfo,friends:friends.bag.user.friends}));
+			friends.bag.profile = new friends.Model.Profile($.extend({},
+				friends.bag.user.profile,
+				{_id:friends.bag.user._id,accountInfo:friends.bag.user.accountInfo,friends:friends.bag.user.friends,friendRequestRecieved:friends.bag.user.friendRequestRecieved,
+				friendRequestSent:friends.bag.user.friendRequestSent}
+				));
 			friends.bag.socket = io();
 			if($('.left-sidebar').length>0){
 				var profilePic = new friends.Views.ProfilePic({model:friends.bag.profile,$container: $('.my-profile-pic')});			

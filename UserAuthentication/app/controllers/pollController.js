@@ -3,7 +3,7 @@ var _  = require('underscore');
 
 module.exports = {
 	get:function(user,filter,callback){
-		var qry = Poll.find({candidates:{$all:user.friends}});
+		var qry = Poll.find({$or:[{candidates:{$all:user.friends}},{candidates:user._id}]});
 		qry.exec(function(err,res){
 			if(err!=null){
 				callback(null,err);
@@ -16,7 +16,9 @@ module.exports = {
 		});
 	},
 	getById:function(user,id,callback){
-		var qry = Poll.findOne({_id:id,candidates:{$all:user.friends}});
+		var qry = Poll.findOne({$and:[
+			{_id:id},{$or:[{candidates:{$all:user.friends}},{candidates:user._id}]}
+			]});
 		qry.execute(function(err,res){
 			if(err!=null){
 				callback(null,err);

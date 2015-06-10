@@ -1,5 +1,6 @@
 var User = require('../models/User');
 var https = require('https');
+var _ = require('underscore');
 
 
 function createProfile(user,userVM){
@@ -118,6 +119,86 @@ module.exports = {
 			if(error)
 				callback(null,error);
 			callback(users,null);
+		});
+	},
+	addFriend:function(authUser,id,callback){
+		var saveFriendship = function(user){
+			user.save(function(error,user){
+				if(error){
+					callback(null,error);
+				}
+				callback({_id:id})
+			});
+		}
+		User.findById(authUser._id,function(error,user){			
+			if(error){
+				callback(null,error);
+			}
+			User.findById(id,function(error,friend){
+				if(error){
+					callback(null,error);
+				}
+				// if the user is already added in the other person's friendlist then just update user's friendlist
+				if(friend.friends.indexOf(authUser._id)>=0){
+					if(user.friends.indexOf(friend._id)<0){
+						user.friends.push(friend._id);
+						saveFriendship(user);
+					}
+				}
+				// if friend request already sent
+				if(user.friendRequestSent.indexOf(id)>=0 && friend.friendRequestRecieved.indexOf(user._id)>=0)
+				{
+					callback(null,{errorType:'Duplicate',message:'Friend Request already sent'});
+				}
+				// if friend request was sent but not recieved
+				else if(user.friendRequestSent.indexOf(id)>=0)
+				{
+					friend.friendRequestRecieved.push(user._id);
+					saveFriendship(friend);
+				}
+				// if friend request is with the person but not on the addition list
+				else if(friend.friendRequestRecieved.indexOf(id)>=0)
+				{
+					user.friendRequestSent.push(friend._id);
+					saveFriendship(user);
+				}
+				// if the request is recieved from that person
+				if(user.friendRequestRecieved.indexOf(id)>=0){
+					friend.friendRequestSent = _.without(friend.friendRequestSent,authUser._id);
+					friend.friends.push(user._id);
+					friend.save(function(error,f){
+						if(error){
+							callback(null,error);
+						}
+						user.friendRequestRecieved = _.without(user.friendRequestRecieved,friend._id);
+						user.friends.push(friend._id);
+						saveFriendship(user);
+					});
+				}
+				// if there has been no request from either side
+				if(friend.friendRequestRecieved.indexOf(user._id)<0){
+					friend.friendRequestRecieved.push(user._id);
+					friend.save(function(error,f){
+						if(error){
+							callback(null,error);
+						}
+						user.friendRequestSent.push(friend._id);
+						saveFriendship(user);
+					});
+				}				
+				
+			});			
+		});
+	},
+	removeFriend:function(authUser,id,callback){
+		User.findByIdAndUpdate(id,{$pull:{"friends":authUser._id}},
+			{safe:true,new:true},function(err,model){
+			if(err) callback(null,err);
+			User.findByIdAndUpdate(authUser._id,{$pull:{"friends":id}},
+				{safe:true,new:true},function(err,model){
+				if(err) callback(null,err);				
+				else callback({_id:id},null);
+			});
 		});
 	}
 }

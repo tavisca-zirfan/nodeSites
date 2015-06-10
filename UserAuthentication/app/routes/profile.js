@@ -17,7 +17,7 @@ route.get('/profile/:id?',isAuthenticated,function(req,res){
 	}else{
 		profileId = currentUser._id;
 	}
-	res.render('profile',{user:currentUser,sidebarNotRequired:true,profileId:profileId});
+	res.render('profile',{user:req.user,sidebarNotRequired:true,profileId:profileId});
 });
 
 route.get('/api/profile',isAuthenticated,function(req,res){
@@ -73,6 +73,24 @@ route.put('/api/profile/:id',function(req,res,next){
 		if(!err && noOfRows.nModified>0){
 			res.status(200).send();
 		}
+	});
+});
+
+route.post('/api/profile/:id/friend',function(req,res,next){
+	userController.addFriend(req.user,req.params.id,function(err,res){		
+		if(err){
+			res.status(302).send(err);
+		}
+		res.status(200).send(res);
+	});
+});
+
+route.delete('/api/profile/:id/friend/:fid',function(req,res,next){
+	userController.removeFriend(req.user,req.params.id,function(err,res){		
+		if(err){
+			res.status(302).send(err);
+		}
+		res.status(200).send(res);
 	});
 });
 

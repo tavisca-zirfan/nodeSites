@@ -65,6 +65,15 @@
             that.model.save();
             return false;
         });
+        $('.add-friend',this.$el).on('click',function(){
+            that.model.attributes.friendRequestSent.create({});
+            $(this).text('Friend Request Sent').attr('disabled', 'disabled');
+        });
+        $('.confirm-friend',this.$el).on('click',function(){
+            friends.bag.profile.attributes.friendRequestRecieved.remove(that.model.id);
+            that.model.attributes.friends.create({});
+            $(this).hide();
+        });
         $('.btnCancel',this.$el).on('click',function(){
             that.model = that.originalModel;
             that.render();

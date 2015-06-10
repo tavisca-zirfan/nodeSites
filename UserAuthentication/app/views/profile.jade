@@ -10,10 +10,22 @@ block content
         .col-sm-9.col-lg-10
           .pull-right
             h1 {{attributes.name.firstName}} {{attributes.name.lastName}}
-            button.btn.btn-success(type='button') Add me!
+            {{#xif 'this.id!=friends.bag.profile.id'}}
+            {{#xif '_.pluck(friends.bag.profile.attributes.friends,"id").indexOf(this.id)<=0'}}
+            button.btn.btn-success.add-friend(type='button') Add me!
             |     
+            {{/xif}}
+            {{#xif 'friends.bag.profile.attributes.friendRequestSent.pluck("id").indexOf(this.id)>=0'}}
+            button.btn.btn-success(type='button') Friend Request Sent!
+            |     
+            {{/xif}}
+            {{#xif 'friends.bag.profile.attributes.friendRequestRecieved.pluck("id").indexOf(this.id)>=0'}}
+            button.btn.btn-success.add-friend(type='button') Confirm Friendship!
+            |     
+            {{/xif}}
             button.btn.btn-info(type='button') Send me a message
             br
+            {{/xif}}
         
       br
       .row
