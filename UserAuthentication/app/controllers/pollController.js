@@ -8,22 +8,19 @@ module.exports = {
 			if(err!=null){
 				callback(null,err);
 			}
-			var results = [];
-			_.each(res,function(poll){
-				results.push(poll.results);
-			})
-			callback(results,null);
+			
+			callback(res,null);
 		});
 	},
 	getById:function(user,id,callback){
 		var qry = Poll.findOne({$and:[
 			{_id:id},{$or:[{candidates:{$all:user.friends}},{candidates:user._id}]}
 			]});
-		qry.execute(function(err,res){
+		qry.exec(function(err,res){
 			if(err!=null){
 				callback(null,err);
 			}
-			callback(res.results,null);
+			callback(res,null);
 		});
 	},
 	create:function(user,poll,callback){
@@ -77,7 +74,7 @@ module.exports = {
 				if(err!=null){
 					callback(null,err);
 				}
-				callback(res.results,null);
+				callback(res,null);
 			});
 		});
 	}

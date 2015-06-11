@@ -61,4 +61,18 @@ var userSchema = new mongoose.Schema({
 	strict:true,
 });
 
+userSchema.methods.getByAccess = function(userId){
+	var that = this.toJSON();
+	var info = {_id:that._id,profile:that.profile,friends:that.friends}
+	if(that.friends.indexOf(userId)>0){
+		info.accountInfo = that.accountInfo;
+	}
+	if(that._id==userId){
+		info.friendRequestSent = that.friendRequestSent;
+		info.friendRequestRecieved = that.friendRequestRecieved;
+		info.verified = that.verified;
+	}
+	return info;
+}
+
 module.exports = userSchema;

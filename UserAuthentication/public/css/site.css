@@ -205,3 +205,12 @@ div.img-div{
 .ui-autocomplete {
     z-index: 5000;
 }
+
+.profile-search-bar{    
+    margin-top: 7px;
+}
+.profile-search-bar #txtSearch{
+    margin-left:5%;
+    height: 35px;
+    width: 20%;
+}

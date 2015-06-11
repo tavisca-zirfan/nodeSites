@@ -6,11 +6,17 @@ var facebookStrategy = require('passport-facebook').Strategy;
 var authConfig = require('../config/configAuth');
 
 passport.serializeUser(function(user,done){
-	done(null,user);
+	done(null,user._id);
 });
 
-passport.deserializeUser(function(user,done){
-	done(null,user);
+passport.deserializeUser(function(userId,done){
+	userController.getById(userId,userId,function(user,error){
+		if(error){
+			done(error,null);
+		}else{
+			done(null,user)
+		}
+	})
 });
 
 passport.use('local-signin',new localStrategy(function(username,password,done){

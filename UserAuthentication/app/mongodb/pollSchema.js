@@ -25,7 +25,7 @@ pollSchema.virtual('results')
 			var result = {candidate:vote.candidate,points:points};
 			results.push(result);			
 		});
-		return {_id:this._id,question:this.question,gender:this.gender,candidates:this.candidates,results:results};
+		return {_id:this.id,question:this.question,gender:this.gender,candidates:this.candidates,results:results};
 	})
 
 module.exports = pollSchema;

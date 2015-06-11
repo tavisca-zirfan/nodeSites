@@ -7,7 +7,14 @@ window.friends.Model.Poll = Backbone.Model.extend({
     urlRoot:'/api/poll/',
     addVote:function(votes){
         var that = this;
-        $.post('/api/poll/'+that.id+'/votes/',JSON.stringify({votes:votes})).done(function(response){
+        var data = JSON.stringify({votes:votes});
+        $.ajax({
+          url: '/api/poll/'+that.id+'/votes/',
+          type: 'POST',
+          data: data,
+          contentType: 'application/json; charset=utf-8',
+          dataType: 'json'
+        }).done(function(response){
             that.set(response);
         }).fail(function(error){
 

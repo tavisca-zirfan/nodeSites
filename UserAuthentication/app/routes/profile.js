@@ -28,13 +28,13 @@ route.get('/api/profile',isAuthenticated,function(req,res){
 	else listOfIds = null;
 	if(req.query.sortBy) var sortBy = req.query.sortBy;
 	else sortBy = null;
-	userController.getAll({},filter,listOfIds,pagination,sortBy,function(users,error){
+	userController.getAll(req.user,{},filter,listOfIds,pagination,sortBy,function(users,error){
 		if(error){
 			res.status(302).send(error);
 		}
 		resultArray = [];
 		users.forEach(function(user,index){
-			var userJSON = user.toJSON();
+			var userJSON = user;
 			userJSON.profile._id = userJSON._id;
 			userJSON.profile.accountInfo = userJSON.accountInfo;
 			userJSON.profile.friends = userJSON.friends;
@@ -50,7 +50,7 @@ route.get('/api/profile/:id',isAuthenticated,function(req,res,next){
 		if(error){
 			res.status(404).send({message:'User not found'});
 		}
-		var userJSON = user.toJSON();
+		var userJSON = user;
 		userJSON.profile._id = userJSON._id;
 		userJSON.profile.accountInfo = userJSON.accountInfo;
 		res.status(200).send(userJSON.profile);

@@ -1,6 +1,7 @@
 var express = require('express');
 var route = express.Router();
 var pollController = require('../controllers/pollController');
+var _ = require('underscore');
 
 route.get('/poll/',isAuthenticated,function(req,res){
 	res.render('poll',{user:req.user,sidebarNotRequired:false});
@@ -12,7 +13,11 @@ route.get('/api/poll/',isAuthenticated,function(req,res){
 		if(error){
 			res.status(302).send(error);
 		}
-		res.status(200).send(polls);
+		var results = [];
+			_.each(polls,function(poll){
+				results.push(poll.results);
+			})
+		res.status(200).send(results);
 	});
 
 });
@@ -22,7 +27,7 @@ route.get('/api/poll/:id',isAuthenticated,function(req,res){
 		if(error){
 			res.status(302).send(error);
 		}
-		res.status(200).send(poll);
+		res.status(200).send(poll.results);
 	});
 });
 
@@ -49,7 +54,7 @@ route.post('/api/poll/:id/votes',isAuthenticated,function(req,res){
 		if(error){
 			res.status(302).send(error);
 		}
-		res.status(200).send(response);
+		res.status(200).send(response.results);
 	});
 });
 

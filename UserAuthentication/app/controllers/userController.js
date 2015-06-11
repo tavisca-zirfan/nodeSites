@@ -27,13 +27,13 @@ module.exports = {
 				callback(user,null);
 		});
 	},
-	getById:function(caller,userId,callback){
+	getById:function(callerId,userId,callback){
 		// if(caller._id == userId || caller.friends.indexOf(userId)>-1){
 			User.findOne({'_id':userId},function(error,user){
 				if(error)
 					callback(null,error);
 				else
-					callback(user,null);
+					callback(user.getByAccess(callerId),null);
 			});
 		// }else{
 		// 	callback(null,{message:'User does not have sufficient rights'})
@@ -97,7 +97,7 @@ module.exports = {
 	update:function(query,updates,options,callback){
 		User.update(query,updates,options,callback);
 	},
-	getAll:function(qry,filter,list,paging,sortBy,callback){
+	getAll:function(user,qry,filter,list,paging,sortBy,callback){
 		var query = qry||{};
 		if(filter.name){
 			query["$or"] = [{'profile.name.firstName' : new RegExp(filter.name, 'i')},{'profile.name.middleName' : new RegExp(filter.name, 'i')},{'profile.name.lastName' : new RegExp(filter.name, 'i')}];
@@ -109,7 +109,7 @@ module.exports = {
 		if(!paging.all){
 			userQuery.skip((paging.pageNumber-1)*10).limit(paging.recordsPerPage);
 		}
-		userQuery.select('profile friends accountInfo');
+		// userQuery.select('profile friends accountInfo');
 		if(sortBy){
 			sortProperty = {};
 			sortProperty[sortBy] = 'descending'
@@ -118,7 +118,11 @@ module.exports = {
 		userQuery.exec(function(error,users){
 			if(error)
 				callback(null,error);
-			callback(users,null);
+			var usersArray = [];
+			_.each(users,function(el, index) {
+				usersArray.push(el.getByAccess(user._id));
+			});
+			callback(usersArray,null);
 		});
 	},
 	addFriend:function(authUser,id,callback){
@@ -165,7 +169,12 @@ module.exports = {
 				{
 					friend.friendRequestSent.pull(user._id);
 					friend.friendRequestRecieved.push(user._id);
-					saveFriendship(friend);
+					friend.save(function(error,f){
+						if(error){
+							callback(null,error);
+						}
+						callback({_id:id});
+					});
 				}
 				// if friend request is with the person but not on the addition list
 				else if(friend.friendRequestRecieved.indexOf(id)>=0)

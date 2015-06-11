@@ -37,7 +37,8 @@ html
 									a(href='#') Separated link
 								li
 									a(href='#') One more separated link
-					span.pull-right Name
+					.profile-search-bar
+						input(type="text",class="input-lg",id="txtSearch",placeholder="Search for people")
 			// /.nav-collapse
 		script#profileFriendSectionTemplate(type="text/template")
 			.panel.panel-default.friend-list
@@ -91,6 +92,7 @@ html
 				var profilePic = new friends.Views.ProfilePic({model:friends.bag.profile,$container: $('.my-profile-pic')});			
 				var friendlistView = new friends.Views.FriendListView();
 			}
+			new friends.Views.ProfileSearchAutocomplete();
 			
 		block scripts
 		
