@@ -11,6 +11,7 @@ var post = require('./app/routes/post');
 var poll = require('./app/routes/poll');
 var profile = require('./app/routes/profile');
 var chatController = require('./app/controllers/chatController');
+var userController = require('./app/controllers/userController');
 var multer = require('multer');
 var fs = require('fs');
 var app = express();
@@ -70,8 +71,14 @@ io.set('authorization',function(handshakeData,accept){
 				var cookieObject = JSON.parse(currentSession);
 				if(cookieObject && cookieObject.passport){
 					if(cookieObject.passport.user){
-						handshakeData.user = cookieObject.passport.user;
-						accept(null,true);
+						userController.getById(cookieObject.passport.user,cookieObject.passport.user,function(user,error){
+							if(error){
+								accept(error,false);
+							}
+							handshakeData.user = user;
+							accept(null,true);
+						});
+						
 					}
 				}else
 					accept({msg:'Some error'},false);
