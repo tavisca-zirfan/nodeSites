@@ -1,0 +1,50 @@
+script#geographyViewTemplate(type="text/template")
+  #divMapOverlay.clearfix.google-map-view
+    form
+      | {{#isEditable}}
+      input#txtHdnGeography.hidden(type='hidden', name='txtHdnGeography')
+      .col-md-12.col-lg-12.col-sm-12.pad0-left.pad0-right
+        .form-group
+          .input-icon.right
+            i.fa.fa-search
+            input#txtMapSearch.form-control(type='text', placeholder='Search on map', name='txtMapSearch')
+      {{/isEditable}}
+      .form-group.margin0-bottom
+        #divMap.map_canvas.pull-left.margin0(style='width: 100%; height: 350px; border: 1px solid #d3d3d3;')
+
+
+script#tmplGeoregionInfoWindow(type="text/x-handlebars-template")   
+  div(style='height: 100%')
+    #georegion_container(style='height: 100%')
+      div
+        div(style='padding: 3px 0px')
+          label
+            | Name Of Region 
+            span.required *
+          input#infoWindowTitle(type='text')
+      div(style='position: relative; bottom: 0px; padding-top: 10px;')
+        input#btnOk(onclick='GeoReg.closeInfoWindow()', type='button', value='OK')
+        input#btnDelete(onclick='GeoReg.deleteSelectedShape()', type='button', value='Delete')
+        label#lblError(style='display: inline; color: rgb(255, 84, 84); margin-left: 5px;')
+
+script.
+  function initialize() {
+    var script = document.createElement('script');
+    script.type = 'text/javascript';
+    script.src = '/scripts/Library/gmap3.min.js';
+    //document.body.appendChild(script);
+    google.maps.Polygon.prototype.my_getBounds = function () {
+      var bounds = new google.maps.LatLngBounds()
+      this.getPath().forEach(function (element, index) { bounds.extend(element) })
+      return bounds
+    }
+  }
+  function loadScript() {
+    var script = document.createElement('script');
+    script.type = 'text/javascript';
+    script.src = '//maps.googleapis.com/maps/api/js?v=3.exp&libraries=drawing&sensor=false&' + 'callback=initialize';
+    script.async = true;
+    //document.body.appendChild(script);
+  }
+  window.onload = loadScript;
+</script>

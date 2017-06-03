@@ -1,0 +1,69 @@
+script#basePostViewTemplate(type="text/template")
+  .base-card(id='{{id}}')
+      .row
+        .col-md-2
+          img.img-responsive(data-src='holder.js/40x40', style='width: 40px; height: 40px', src='{{attributes.from.profile.imageUrl}}')
+        .col-md-10.col-md-pull-1
+          div
+            span {{attributes.from.profile.name.firstName}}
+            span.text-muted  Posted
+          .text-muted {{x 'moment(this.attributes.createdAt).fromNow()'}} 
+      .row
+        .col-md-12
+          .post-type-container
+      .row.card-action
+        .col-md-12
+          span
+            a(href='#') Like
+          span
+            a(href='#') Dislike
+          span
+            a(href='#') Comment
+      hr
+      .row
+        .col-md-12
+          .post-like
+          div
+            span.glyphicon.glyphicon-thumbs-up
+            span 67 people like this
+          hr
+      .commentsSection
+        .comments
+        .row.add-comment
+          .col-md-2
+            img.img-responsive(data-src='holder.js/40x40', style='width: 40px; height: 40px', src="{{x 'friends.bag.profile.attributes.imageUrl'}}")
+          .col-md-10.col-md-pull-1
+            .form-group.margin5-top
+              input.form-control.comment-box(type='text', placeholder='Comment here ...')
+
+script#commentViewTemplate(type="text/template")
+  .row.comment
+    .col-md-2
+      img.img-responsive(data-src='holder.js/40x40', style='width: 40px; height: 40px', src='{{attributes.from.profile.imageUrl}}')
+    .col-md-10.col-md-pull-1
+      div
+        span
+          a(href='#') {{attributes.from.profile.name.firstName}}
+        span.message
+          | {{attributes.commentText}}
+      div
+        span.text-muted {{x 'moment(this.attributes.createdAt).fromNow()'}}
+        span.comment-like
+
+script#likeViewTemplate(type="text/template")
+  span.card-action.glyphicon.glyphicon-thumbs-up {{likes.length}}
+  span.card-action.glyphicon.glyphicon-thumbs-down {{dislikes.length}}
+
+script#textPostViewTemplate(type="text/template")
+  .text-post {{attributes.text}}
+
+script#postListTemplate(type="text/template")
+  .row
+    .col-md-12
+      .row
+        .col-md-12.form
+          .form-group
+            textarea.form-control.input-lg.large.post-message(placeholder="What's on your mind")
+      .row
+        .col-md-12
+          .posts

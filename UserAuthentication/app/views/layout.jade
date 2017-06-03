@@ -1,0 +1,99 @@
+doctype html
+html
+	head
+		include shared/styles.jade		
+		block head
+	body
+		.navbar.navbar-default.navbar-fixed-top
+			.container.main-container
+				.navbar-header
+					button.navbar-toggle(type='button', data-toggle='collapse', data-target='.navbar-collapse')
+						span.icon-bar
+						span.icon-bar
+						span.icon-bar
+					a.navbar-brand(href='#') Friends4Ever
+				.navbar-collapse.collapse
+					ul.nav.navbar-nav
+						li
+							a(href='') Home
+						li
+							a(href='') About
+						li
+							a(href='') Contact
+						li.dropdown
+							a.dropdown-toggle(href='#', data-toggle='dropdown')
+								| Setting 
+								b.caret
+							ul.dropdown-menu
+								li
+									a(href='#') Sample Menu
+								li
+									a(href='#') Sample Menu
+								li
+									a(href='#') Another Menu
+								li.divider
+								li.dropdown-header Nav header
+								li
+									a(href='#') Separated link
+								li
+									a(href='#') One more separated link
+					.profile-search-bar
+						input(type="text",class="input-lg",id="txtSearch",placeholder="Search for people")
+			// /.nav-collapse
+		script#profileFriendSectionTemplate(type="text/template")
+			.panel.panel-default.friend-list
+				.panel-heading
+					.card-title 
+						|  Friends 
+				.search
+					input.input-lg(type='text',style='width:100%',id='friendSearch')
+				.panel-body
+					
+		script#profileFriendListTemplate(type="text/template")			
+			{{#each profiles}}
+			.friend-thumbnail(data-id="{{id}}")
+				img.img.img-responsive.img-circle(src="{{attributes.imageUrl}}")
+				span
+					a(href="/profile/{{attributes._id}}")
+					|	{{attributes.name.firstName}} {{attributes.name.lastName}}
+			{{/each}}
+		include shared/profilePicTemplate
+		div
+			noscript
+				.alert
+					button.close(type='button', data-dismiss='alert') ×
+					strong Warning! Please enable JavaScript in your browser!
+			.container.target
+				.row
+					if !sidebarNotRequired
+						.col-sm-3.col-md-3.col-lg-2.left-sidebar
+							.my-profile-pic.col-lg-offset-2.col-md-offset-1
+							.friendlist
+						#content.col-sm-5.col-lg-7
+							block content
+						.col-sm-4.right-sidebar.col-lg-3
+							block rightSideBar
+					else
+						#content.col-sm-12
+							block content
+				.row.footer
+					block footer
+		include shared/chatTemplate.jade
+		include shared/scripts.jade
+		script.
+			friends.bag.user = !{JSON.stringify(user)}
+			friends.bag.profile = new friends.Model.Profile($.extend({},
+				friends.bag.user.profile,
+				{_id:friends.bag.user._id,accountInfo:friends.bag.user.accountInfo,friends:friends.bag.user.friends,friendRequestRecieved:friends.bag.user.friendRequestRecieved,
+				friendRequestSent:friends.bag.user.friendRequestSent}
+				),{parse:true});
+			friends.bag.socket = io();
+			if($('.left-sidebar').length>0){
+				var profilePic = new friends.Views.ProfilePic({model:friends.bag.profile,$container: $('.my-profile-pic')});			
+				var friendlistView = new friends.Views.FriendListView();
+			}
+			new friends.Views.ProfileSearchAutocomplete();
+			
+		block scripts
+		
+

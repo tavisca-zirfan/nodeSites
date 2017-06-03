@@ -1,0 +1,216 @@
+@media (min-width: 980px) {
+  body {
+    padding-top: 60px;
+    padding-bottom: 40px;
+  }
+}
+
+.main-container{
+    min-width:90%;
+}
+
+[class^="icon-"],[class*=" icon-"] {
+    background-image: url("/Content/images/glyphicons-halflings.png");
+}
+.apps {
+    /*background-image: url("/Content/images/app_store.png");*/
+    min-height: 400px;
+    background-color: aliceblue;
+}
+.ftr {
+    padding:50px;
+    background-color: darkseagreen;
+    color: white;
+    font-size: 1.2em;
+}
+.ftr img{
+    height: 100px;
+    width: 150px;
+}
+.sign-up {
+    padding: 20px 0px;
+}
+.sign-up .form-group{
+    padding-left: 0px;
+}
+.sign-up .btn {
+    padding-left: 30px;
+    padding-right: 30px;
+    font-size: 1.4em;
+}
+.home-content {
+    border-left: #e6e6e6 1px solid;
+    min-height: 600px;
+}
+#frmPic{
+    max-width: 150px;
+}
+/*base card start here*/
+.base-card,.event-card {
+    border:#e6e6e6 1px solid;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    margin-top: 30px;
+    margin-bottom: 60px;
+}
+.event-card {
+    margin-bottom: 20px;
+}
+.base-card .row {
+    padding: 0px 15px;
+}
+.base-card .card-action {
+    padding-top: 5px;
+    padding-bottom: 5px
+}
+.base-card .card-action span {
+    padding-right: 5px;
+}
+.base-card hr {
+    margin: 2px;
+}
+.base-card .comment {
+    padding-top: 10px
+}
+
+/*Events start here*/
+.events {
+    margin-bottom: 10px;
+}
+
+div.img-div{
+    height:200px;
+    width:200px;
+    overflow:hidden;
+    border-radius:50%;
+}
+
+.img-div img{
+    -webkit-transform:translate(-10%);
+    margin-left:100px;
+}
+
+.circle-image img{
+   border-radius: 50%;
+    width: 140px;
+    height: 140px;
+    /*background-image:url("http://placekitten.com/g/200/400");*/
+}
+*/
+@media (min-width: 768px) {
+    .omb_row-sm-offset-3 div:first-child[class*="col-"] {
+        margin-left: 25%;
+    }
+}
+
+.omb_login .omb_authTitle {
+    text-align: center;
+    line-height: 300%;
+}
+    
+.omb_login .omb_socialButtons a {
+    color: white; // In yourUse @body-bg 
+    opacity:0.9;
+}
+.omb_login .omb_socialButtons a:hover {
+    color: white;
+    opacity:1;      
+}
+.omb_login .omb_socialButtons .omb_btn-facebook {background: #3b5998;}
+.omb_login .omb_socialButtons .omb_btn-twitter {background: #00aced;}
+.omb_login .omb_socialButtons .omb_btn-google {background: #c32f10;}
+
+
+.omb_login .omb_loginOr {
+    position: relative;
+    font-size: 1.5em;
+    color: #aaa;
+    margin-top: 1em;
+    margin-bottom: 1em;
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+}
+.omb_login .omb_loginOr .omb_hrOr {
+    background-color: #cdcdcd;
+    height: 1px;
+    margin-top: 0px !important;
+    margin-bottom: 0px !important;
+}
+.omb_login .omb_loginOr .omb_spanOr {
+    display: block;
+    position: absolute;
+    left: 50%;
+    top: -0.6em;
+    margin-left: -1.5em;
+    background-color: white;
+    width: 3em;
+    text-align: center;
+}           
+
+.omb_login .omb_loginForm .input-group.i {
+    width: 2em;
+}
+.omb_login .omb_loginForm  .help-block {
+    color: red;
+}
+.friend-list .friend-thumbnail img{
+    display: inline;
+    height: 40px;    
+}
+.friend-list .friend-thumbnail span{
+    padding-left: 20px;    
+}
+.friend-list .friend-thumbnail{
+    padding-top: 15px;
+}
+.friend-list .panel-body{
+    height:400px;
+    overflow-y: scroll;
+}
+
+
+.chat-container{
+    position: fixed;
+    bottom: -20px;
+    right: 0px;
+}
+.chat-container li{
+    list-style-type: none;
+}
+
+.chat-container ul{
+    padding-left: 0px;
+}
+
+.chat-container img{
+    height: 50px;
+}
+
+#georegion_container input[type=text] { font-family: "Open Sans",sans-serif; height: 24px; line-height: 1.42857143; width: 300px; padding: 3px; font-size: 14px; font-weight: normal; color: #333; background-color: #fff; border: 1px solid #e5e5e5; border-radius: 0; -webkit-box-shadow: none; box-shadow: none; }
+#georegion_container input[type=text]:focus { border-color: #999 !important; outline: 0; -webkit-box-shadow: none; box-shadow: none; }
+#georegion_container label { color: #333; font-family: "Open Sans",sans-serif; font-weight: 400; font-size: 14px; display: block; margin-bottom: 5px; }
+#georegion_container label .required { color: #e02222; font-size: 12px; padding-left: 2px; }
+#georegion_container #btnOk { font-family: "Open Sans",sans-serif; background-color: #1caf9a; color: #ffffff; border-width: 0; padding: 7px 14px; font-size: 14px; outline: none!important; background-image: none!important; filter: none; -webkit-box-shadow: none; -moz-box-shadow: none; box-shadow: none; text-shadow: none; cursor: pointer; }
+#georegion_container #btnDelete { margin-left: 10px; font-family: "Open Sans",sans-serif; border-width: 0; padding: 7px 14px; font-size: 14px; outline: none!important; background-image: none!important; filter: none; -webkit-box-shadow: none; -moz-box-shadow: none; box-shadow: none; text-shadow: none; cursor: pointer; color: #333; background-color: #e5e5e5; }
+#georegion_container #btnOk:hover, #georegion_container #btnOk:focus, #georegion_container #btnOk:active { background-color: #1a9483; border-color: #1caf9a; }
+#georegion_container #btnDelete:hover, #georegion_container #btnDelete:focus, #georegion_container #btnDelete:active { background-color: #d1d1d1; border-color: #1caf9a; }
+    
+@media (min-width: 768px) {
+    .omb_login .omb_forgotPwd {
+        text-align: right;
+        margin-top:10px;
+    }       
+}
+
+.ui-autocomplete {
+    z-index: 5000;
+}
+
+.profile-search-bar{    
+    margin-top: 7px;
+}
+.profile-search-bar #txtSearch{
+    margin-left:5%;
+    height: 35px;
+    width: 20%;
+}

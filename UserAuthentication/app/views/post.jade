@@ -1,0 +1,31 @@
+extends layout.jade
+
+block content
+  .post-list
+  include shared/postTemplate.jade
+  include shared/eventTemplate.jade
+block rightSideBar
+  .event-list-notification
+
+block scripts
+  script(type="text/javascript", src="/scripts/Views/likeView.js")
+  script(type="text/javascript", src="/scripts/Views/commentView.js")
+  script(type="text/javascript", src="/scripts/Views/commentListView.js")
+  script(type="text/javascript", src="/scripts/Views/basePostView.js")
+  script(type="text/javascript", src="/scripts/Views/likeView.js")
+  script(type="text/javascript", src="/scripts/Model/likeModel.js")
+  script(type="text/javascript", src="/scripts/Model/dislikeModel.js")
+  script(type="text/javascript", src="/scripts/Model/commentModel.js")
+  script(type="text/javascript", src="/scripts/Model/eventPerson.js")
+  script(type="text/javascript", src="/scripts/Model/postModel.js")
+  script(type="text/javascript", src="/scripts/Model/profileModel.js")
+  script(type="text/javascript", src="//maps.googleapis.com/maps/api/js?v=3.exp&libraries=drawing&sensor=false&' + 'callback=initialize")
+  script(type="text/javascript", src="/scripts/Library/gmap3.min.js")
+  script(type="text/javascript", src="/scripts/Views/geoLocationView.js")
+  script(type="text/javascript", src="/scripts/Views/postListView.js")
+  script(type="text/javascript", src="/scripts/Views/eventListView.js")
+  script(type="text/javascript", src="/scripts/Views/eventView.js")
+  script.
+    var postListView = new friends.Views.PostListView();
+    var eventListView = new friends.Views.EventListView({collection:new friends.Collection.EventPost()});
+  

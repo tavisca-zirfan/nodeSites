@@ -1,0 +1,164 @@
+extends layout.jade
+
+block content
+  #profile
+  script#profileViewTemplate(type="text/template")
+    div
+      .row
+        .col-sm-3.col-lg-2
+          .profile-pic.col-lg-offset-2.col-md-offset-1.col-md-offset-1
+        .col-sm-9.col-lg-10
+          .pull-right
+            h1 {{attributes.name.firstName}} {{attributes.name.lastName}}
+            {{#xif 'this.id!=friends.bag.profile.id'}}
+            {{#xif 'friends.bag.profile.attributes.friends.pluck("_id").indexOf(this.id)<0 && friends.bag.profile.attributes.friendRequestSent.pluck("_id").indexOf(this.id)<0 && friends.bag.profile.attributes.friendRequestRecieved.pluck("_id").indexOf(this.id)<0'}}
+            button.btn.btn-success.add-friend(type='button') Add me!
+            |     
+            {{/xif}}
+            {{#xif 'friends.bag.profile.attributes.friendRequestSent.pluck("_id").indexOf(this.id)>=0'}}
+            button.btn.btn-success(type='button',disabled='disabled') Friend Request Sent!
+            |     
+            {{/xif}}
+            {{#xif 'friends.bag.profile.attributes.friendRequestRecieved.pluck("_id").indexOf(this.id)>=0'}}
+            button.btn.btn-success.confirm-friend(type='button') Confirm Friendship!
+            |     
+            {{/xif}}
+            button.btn.btn-info(type='button') Send me a message
+            br
+            {{/xif}}
+        
+      br
+      .row
+        .col-sm-3.col-lg-2
+          // left col
+          .birthday
+          .relationship
+          .account-info
+          .friendlist
+             
+          
+        // /col-3
+        .col-sm-9.col-lg-10(style='', contenteditable='false')          
+          .about
+          .perfect-date
+          .perfect-friend
+          .education      
+          .panel.panel-default.target
+            .panel-heading(contenteditable='false') My Hobbies
+            .panel-body
+              .row
+                .col-md-4
+                  .thumbnail
+                    img(alt='300x200', src='http://lorempixel.com/600/200/people')
+                    .caption
+                      h3
+                        | Rover
+                      p
+                        | Cocker Spaniel who loves treats.
+                      p
+                .col-md-4
+                  .thumbnail
+                    img(alt='300x200', src='http://lorempixel.com/600/200/city')
+                    .caption
+                      h3
+                        | Marmaduke
+                      p
+                        | Is just another friendly dog.
+                      p
+                .col-md-4
+                  .thumbnail
+                    img(alt='300x200', src='http://lorempixel.com/600/200/sports')
+                    .caption
+                      h3
+                        | Rocky
+                      p
+                        | Loves catnip and naps. Not fond of children.
+                      p
+          {{#if attributes.canEdit}}
+          .row
+            .col-md-4.col-md-offset-8              
+              a.btn.btn-error.btn-lg.pull-right.btnCancel
+                |  Cancel
+              a.btn.btn-success.btn-lg.pull-right.btnSave
+                |  Save
+          {{/if}}
+        #push
+      footer#footer
+        
+  script#profileCardTemplate(type="text/template")
+    .panel.panel-default
+      .panel-heading
+        .card-title 
+          |  {{title}}          
+          span.pull-right.card-read
+              i.glyphicon.glyphicon-edit
+          {{#if canEdit}}          
+          span.pull-right.card-edit
+              i.glyphicon.glyphicon-refresh
+              i.glyphicon.glyphicon-ok
+          {{/if}}
+      .panel-body
+        .card-content
+  script#profileInfoTemplate(type="text/template")
+    .info-content(contenteditable="false")
+      |  {{{content}}}
+
+  script#profileListTemplate(type="text/template")
+    ul.list-group
+      {{#each listing}}
+      li.list-group-item.text-right
+        span.pull-left
+          strong {{title}}
+        span.editable-property(contenteditable='false',data-property='{{key}}')
+          |  {{value}}
+      {{/each}}
+
+  script#profileDropdownReadTemplate(type="text/template")
+    .info-content(contenteditable="false")
+      |  {{{content}}}
+
+  script#profileDropdownEditTemplate(type="text/template")
+    .info-content(contenteditable="false")
+      select
+        {{#each options}}
+        option(value="{{value}}")
+          |  {{text}}
+        {{/each}}
+
+  script#profileDOBReadTemplate(type="text/template")
+    .info-content(contenteditable="false")
+      |  {{{content}}}
+
+  script#profileDOBEditTemplate(type="text/template")
+    .info-content(contenteditable="false")
+      .row
+        .col-md-12
+          .form-group                  
+            select.form-control.input-lg.col-md-4(name="date",id='date') 
+              <option>Date</option>
+              {{#for 1 31 1}}<option value="{{this}}">{{this}}</option>{{/for}}
+        .col-md-12
+          .form-group
+            select.form-control.input-lg.col-md-4(name="month",id='month') 
+              <option>Month</option>
+              {{#months}}<option value="{{@index}}">{{this}}</option>{{/months}}
+        .col-md-12
+          .form-group
+            select.form-control.input-lg.col-md-4(name="year",id='year') 
+              <option>Year</option>
+              {{#forWhile year 110 -1}}<option value="{{this}}">{{this}}</option>{{/forWhile}}
+        
+  include shared/profilePicTemplate
+block scripts
+  script(type="text/javascript", src="/scripts/Model/profileModel.js")
+  script(type="text/javascript", src="/scripts/Views/profileView.js")
+  script(type="text/javascript", src="/scripts/Views/profilePicView.js")
+  script(type="text/javascript", src="/scripts/Views/baseCardView.js")
+  script(type="text/javascript", src="/scripts/Views/infoCardView.js")
+  script(type="text/javascript", src="/scripts/Views/listCardView.js")
+  script(type="text/javascript", src="/scripts/Views/dropdownCardView.js")
+  script(type="text/javascript", src="/scripts/Views/birthdayCardView.js")
+  script(src="http://cdnjs.cloudflare.com/ajax/libs/jquery.form/3.51/jquery.form.min.js")
+  script.
+    var profileId = '#{profileId}';
+    var view = new friends.Views.ProfileView({profileId:profileId});
