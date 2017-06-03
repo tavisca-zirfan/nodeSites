@@ -1,0 +1,73 @@
+doctype html
+html
+	head
+		include shared/styles.jade		
+		block head
+	body
+		.navbar.navbar-default.navbar-fixed-top
+			.container
+				.navbar-header
+					button.navbar-toggle(type='button', data-toggle='collapse', data-target='.navbar-collapse')
+						span.icon-bar
+						span.icon-bar
+						span.icon-bar
+					a.navbar-brand(href='#') Friends4Ever
+				.navbar-collapse.collapse
+					ul.nav.navbar-nav
+						li
+							a(href='') Home
+						li
+							a(href='') About
+						li
+							a(href='') Contact
+						li.dropdown
+							a.dropdown-toggle(href='#', data-toggle='dropdown')
+								| Setting 
+								b.caret
+							ul.dropdown-menu
+								li
+									a(href='#') Sample Menu
+								li
+									a(href='#') Sample Menu
+								li
+									a(href='#') Another Menu
+								li.divider
+								li.dropdown-header Nav header
+								li
+									a(href='#') Separated link
+								li
+									a(href='#') One more separated link
+					span.pull-right Name
+			// /.nav-collapse
+		script#profileFriendListTemplate(type="text/template")
+			.panel.panel-default.friend-list
+				.panel-heading
+					.card-title 
+						|  Friends         
+					
+				.panel-body
+					{{#each profiles}}
+					.friend-thumbnail
+						img.img.img-responsive.img-circle(src="{{attributes.profile.imageUrl}}")
+						span
+							a(href="/profile/{{attributes._id}}")
+							|	{{attributes.profile.name.firstName}} {{attributes.profile.name.lastName}}
+					{{/each}}
+		div
+			noscript
+				.alert
+					button.close(type='button', data-dismiss='alert') ×
+					strong Warning! Please enable JavaScript in your browser!
+			.row
+				if !sidebarNotRequired
+					.col-md-2.pad25-left.left-sidebar
+				#content.col-md-12
+					block content
+			.row.footer
+				block footer
+		include shared/scripts.jade
+		script.
+			friends.bag.user = !{JSON.stringify(user)}
+		block scripts
+		
+
